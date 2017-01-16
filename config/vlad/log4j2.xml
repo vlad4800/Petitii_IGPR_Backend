@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <!-- <Syslog appName="sonarAgent" name="lrSysLogAppender" host="localhost" 
+            port="514" protocol="UDP"/> -->
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}{GMT} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+        <RollingFile name="RollingFile" fileName="logs/api.log"
+                     filePattern="logs/api-%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'}{GMT} [%t] %-5level %logger{36} - %msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy min="1" max="10"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="RollingFile"/>
+            <AppenderRef ref="STDOUT"/>
+        </Root>
+        <Logger name="ro.igpr.petitions" level="debug"/>
+        <Logger name="org.restexpress.domain" level="debug"/>
+        <Logger name="org.hibernate" level="info"/>
+        <Logger name="org.hibernate.SQL" level="info"/>
+        <Logger name="org.hibernate.type" level="info"/>
+
+        <logger name="com.zaxxer.hikari" level="error"/>
+        <Logger name="org.hibernate.hikaricp" level="error"/>
+    </Loggers>
+</Configuration>

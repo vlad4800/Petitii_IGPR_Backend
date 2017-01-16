@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.url">
+            <![CDATA[jdbc:mysql://localhost:3306/petitions?autoReconnect=true&user=root&password=vlad123]]></property>
+        <property name="connection.provider_class">com.zaxxer.hikari.hibernate.HikariConnectionProvider
+        </property>
+        <property name="connection.driver_class">org.mariadb.jdbc.Driver</property>
+        <property name="hibernate.hikari.minimumIdle">10</property>
+        <property name="hibernate.hikari.maximumPoolSize">50</property>
+        <property name="hibernate.hikari.idleTimeout">30000</property>
+
+
+        <property name="hibernate.temp.use_jdbc_metadata_defaults">false</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL57InnoDBDialect</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+        <property name="hibernate.connection.release_mode">after_transaction</property>
+
+        <property name="hibernate.cache.use_second_level_cache">false</property>
+        <property name="hibernate.cache.use_query_cache">false</property>
+        <property name="hibernate.generate_statistics">false</property>
+        <property name="hibernate.cache.use_structured_entries">true</property>
+
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">false</property>
+        <property name="hibernate.use_sql_comments">false</property>
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
+
+        <mapping class="ro.igpr.petitions.domain.PetitionsEntity"/>
+        <mapping class="ro.igpr.petitions.domain.CountiesEntity"/>
+        <mapping class="ro.igpr.petitions.domain.PetitionMessagesEntity"/>
+    </session-factory>
+</hibernate-configuration>
