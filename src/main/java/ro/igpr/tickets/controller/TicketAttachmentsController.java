@@ -41,6 +41,7 @@ public final class TicketAttachmentsController extends BaseController {
             notes = "Create a new attachment",
             response = TicketAttachmentsEntity.class,
             position = 0)
+
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ticketInfo", required = true, value = "The attachment details", paramType = "body",
                     dataType = "TicketAttachmentsEntity"

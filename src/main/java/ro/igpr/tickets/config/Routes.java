@@ -42,11 +42,11 @@ public abstract class Routes {
                 .name(Constants.Routes.MESSAGE_COLLECTION);
 
         // Attachments
-        server.uri("/tickets/{" + Constants.Url.TICKET_ID + "}/attachments/{" + Constants.Url.ATTACHMENT_ID + "}", config.getTicketMessagesController())
+        server.uri("/tickets/{" + Constants.Url.TICKET_ID + "}/attachments/{" + Constants.Url.ATTACHMENT_ID + "}", config.getTicketAttachmentsController())
                 .method(HttpMethod.GET, HttpMethod.PUT, HttpMethod.DELETE)
                 .name(Constants.Routes.SINGLE_ATTACHMENT);
 
-        server.uri("/tickets/{" + Constants.Url.TICKET_ID + "}/attachments", config.getTicketMessagesController())
+        server.uri("/tickets/{" + Constants.Url.TICKET_ID + "}/attachments", config.getTicketAttachmentsController())
                 .action("readAll", HttpMethod.GET)
                 .method(HttpMethod.POST)
                 .name(Constants.Routes.ATTACHMENT_COLLECTION);

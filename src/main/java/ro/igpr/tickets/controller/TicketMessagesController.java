@@ -37,14 +37,13 @@ public final class TicketMessagesController extends BaseController {
             @ApiResponse(code = 409, message = Constants.Messages.GENERIC_DATA_CONFLICT)
     })
 
-    @ApiOperation(value = "Create a new ticket.",
-            notes = "Create a new ticket.",
+    @ApiOperation(value = "Create a new ticket message.",
+            notes = "Create a new ticket message.",
             response = TicketMessagesEntity.class,
             position = 0)
 
     @ApiImplicitParams({
-
-            @ApiImplicitParam(name = "ticketInfo", required = true, value = "The ticket details", paramType = "body",
+            @ApiImplicitParam(name = "ticketInfo", required = true, value = "The ticket message details", paramType = "body",
                     dataType = "TicketMessagesEntity"
             ),
     })
