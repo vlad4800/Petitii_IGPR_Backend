@@ -5,13 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ro.igpr</groupId>
-    <artifactId>petitions</artifactId>
+    <artifactId>tickets</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-
-    <properties>
-        <environmentName>vlad</environmentName>
-    </properties>
 
     <dependencies>
 
@@ -221,7 +217,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.2.1</version>
                 <configuration>
-                    <mainClass>ro.igpr.petitions.Main</mainClass>
+                    <mainClass>ro.igpr.tickets.Main</mainClass>
                 </configuration>
             </plugin>
 
@@ -240,7 +236,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>ro.igpr.petitions.Main</mainClass>
+                            <mainClass>ro.igpr.tickets.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -261,7 +257,7 @@
                 </executions>
 
                 <configuration>
-                    <finalName>igprPetitionsApi</finalName>
+                    <finalName>igprTicketsApi</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -271,7 +267,7 @@
                             <Class-Path>.</Class-Path>
                         </manifestEntries>
                         <manifest>
-                            <mainClass>ro.igpr.petitions.Main</mainClass>
+                            <mainClass>ro.igpr.tickets.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
