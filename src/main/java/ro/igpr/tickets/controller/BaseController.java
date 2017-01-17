@@ -35,6 +35,7 @@ public abstract class BaseController {
     }
 
     public BaseController() {
+
     }
 
     public Object read(final Request request, final Response response) {
