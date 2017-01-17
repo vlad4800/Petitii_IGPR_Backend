@@ -65,7 +65,7 @@ mysql -u root -p
 ### Import DB
 ```
 mysql -u root -p < src/main/resources/sql/tickets_ddl.sql
-mysql -u root -p < src/main/resources/sql/counties_data.sql
+mysql -u root -p tickets < src/main/resources/sql/counties_data.sql
 ```
 
 ## Configurare
