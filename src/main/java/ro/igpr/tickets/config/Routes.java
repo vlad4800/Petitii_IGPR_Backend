@@ -50,7 +50,5 @@ public abstract class Routes {
                 .action("readAll", HttpMethod.GET)
                 .method(HttpMethod.POST)
                 .name(Constants.Routes.ATTACHMENT_COLLECTION);
-
-
     }
 }
