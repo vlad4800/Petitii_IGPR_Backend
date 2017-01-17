@@ -33,5 +33,6 @@
         <mapping class="ro.igpr.petitions.domain.PetitionsEntity"/>
         <mapping class="ro.igpr.petitions.domain.CountiesEntity"/>
         <mapping class="ro.igpr.petitions.domain.PetitionMessagesEntity"/>
+        <mapping class="ro.igpr.petitions.domain.PetitionAttachmentsEntity"/>
     </session-factory>
 </hibernate-configuration>

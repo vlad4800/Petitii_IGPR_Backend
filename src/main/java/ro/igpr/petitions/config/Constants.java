@@ -11,6 +11,9 @@ public final class Constants {
         public static final String NO_MESSAGE_ID = "No message ID supplied!";
         public static final String MESSAGE_NOT_FOUND = "Message not found!";
 
+        public static final String NO_ATTACHMENT_ID = "No attachment ID supplied!";
+        public static final String ATTACHMENT_NOT_FOUND = "Attachment not found!";
+
         public static final String NO_COUNTY_ID = "No county ID supplied!";
         public static final String COUNTY_NOT_FOUND = "County not found!";
 
@@ -33,6 +36,7 @@ public final class Constants {
         public static final String PETITION_ID = "petitionId";
         public static final String COUNTY_ID = "countyId";
         public static final String MESSAGE_ID = "messageId";
+        public static final String ATTACHMENT_ID = "attachmentId";
     }
 
     /**
@@ -46,6 +50,9 @@ public final class Constants {
 
         public static final String SINGLE_MESSAGE = "message.single.route";
         public static final String MESSAGE_COLLECTION = "message.collection.route";
+
+        public static final String SINGLE_ATTACHMENT = "attachment.single.route";
+        public static final String ATTACHMENT_COLLECTION = "attachment.collection.route";
 
         public static final String SINGLE_COUNTY = "county.single.route";
         public static final String COUNTY_COLLECTION = "county.collection.route";

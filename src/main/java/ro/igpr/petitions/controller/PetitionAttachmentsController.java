@@ -11,14 +11,14 @@ import org.hibernate.criterion.Order;
 import org.restexpress.Request;
 import org.restexpress.Response;
 import ro.igpr.petitions.config.Constants;
-import ro.igpr.petitions.domain.PetitionMessagesEntity;
+import ro.igpr.petitions.domain.PetitionAttachmentsEntity;
 
 import java.util.Date;
 import java.util.List;
 
-public final class PetitionMessagesController extends BaseController {
+public final class PetitionAttachmentsController extends BaseController {
 
-    public PetitionMessagesController() {
+    public PetitionAttachmentsController() {
         super();
     }
 
@@ -30,42 +30,42 @@ public final class PetitionMessagesController extends BaseController {
      * @return
      */
     @ApiResponses({
-            @ApiResponse(code = 201, message = Constants.Messages.OBJECT_CREATED, response = PetitionMessagesEntity.class),
+            @ApiResponse(code = 201, message = Constants.Messages.OBJECT_CREATED, response = PetitionAttachmentsEntity.class),
             @ApiResponse(code = 400, message = Constants.Messages.INVALID_OBJECT_ID),
             @ApiResponse(code = 403, message = Constants.Messages.FORBIDDEN_RESOURCE),
             @ApiResponse(code = 405, message = Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED),
             @ApiResponse(code = 409, message = Constants.Messages.GENERIC_DATA_CONFLICT)
     })
 
-    @ApiOperation(value = "Create a new petition.",
-            notes = "Create a new petition.",
-            response = PetitionMessagesEntity.class,
+    @ApiOperation(value = "Create a new attachment.",
+            notes = "Create a new attachment",
+            response = PetitionAttachmentsEntity.class,
             position = 0)
-
     @ApiImplicitParams({
-
-            @ApiImplicitParam(name = "petitionInfo", required = true, value = "The petition details", paramType = "body",
-                    dataType = "PetitionMessagesEntity"
+            @ApiImplicitParam(name = "petitionInfo", required = true, value = "The attachment details", paramType = "body",
+                    dataType = "PetitionAttachmentsEntity"
             ),
     })
-    public final PetitionMessagesEntity create(final Request request, final Response response) {
+    public final PetitionAttachmentsEntity create(final Request request, final Response response) {
 
         super.create(request, response);
 
         final Integer petitionId = Integer.valueOf(request.getHeader(Constants.Url.PETITION_ID, Constants.Messages.NO_PETITION_ID));
 
-        final PetitionMessagesEntity entity = request.getBodyAs(PetitionMessagesEntity.class, Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED);
+        final PetitionAttachmentsEntity entity = request.getBodyAs(PetitionAttachmentsEntity.class, Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED);
 
         entity.setPetitionId(petitionId);
+
         dao.save(entity);
 
-
         // Bind the resource with link URL tokens, etc. here...
-        final TokenResolver resolver = HyperExpress.bind(Constants.Url.MESSAGE_ID, entity.getId().toString());
+        final TokenResolver resolver = HyperExpress.bind(Constants.Url.ATTACHMENT_ID, entity.getId().toString());
 
         // Include the Location header...
-        final String locationPattern = request.getNamedUrl(HttpMethod.GET, Constants.Routes.SINGLE_MESSAGE);
+        final String locationPattern = request.getNamedUrl(HttpMethod.GET, Constants.Routes.SINGLE_ATTACHMENT);
         response.addLocationHeader(LOCATION_BUILDER.build(locationPattern, resolver));
+
+        // Return the newly-created resource...
 
         response.setResponseCreated();
 
@@ -82,18 +82,18 @@ public final class PetitionMessagesController extends BaseController {
     @ApiImplicitParams({
 
     })
-    public final PetitionMessagesEntity read(final Request request, final Response response) {
+    public final PetitionAttachmentsEntity read(final Request request, final Response response) {
 
         super.read(request, response);
 
-        final Integer id = Integer.valueOf(request.getHeader(Constants.Url.MESSAGE_ID, Constants.Messages.NO_MESSAGE_ID));
+        final Integer id = Integer.valueOf(request.getHeader(Constants.Url.ATTACHMENT_ID, Constants.Messages.NO_ATTACHMENT_ID));
 
-        final PetitionMessagesEntity petition = dao.get(PetitionMessagesEntity.class, id);
+        final PetitionAttachmentsEntity petition = dao.get(PetitionAttachmentsEntity.class, id);
         if (petition == null) {
-            throw new ItemNotFoundException(Constants.Messages.MESSAGE_NOT_FOUND);
+            throw new ItemNotFoundException(Constants.Messages.ATTACHMENT_NOT_FOUND);
         }
 
-        HyperExpress.bind(Constants.Url.MESSAGE_ID, petition.getId().toString());
+        HyperExpress.bind(Constants.Url.ATTACHMENT_ID, petition.getId().toString());
 
         return petition;
     }
@@ -107,16 +107,16 @@ public final class PetitionMessagesController extends BaseController {
      */
     @ApiImplicitParams({
     })
-    public final List<PetitionMessagesEntity> readAll(final Request request, final Response response) {
+    public final List<PetitionAttachmentsEntity> readAll(final Request request, final Response response) {
         super.readAll(request, response);
 
         final Integer petitionId = Integer.valueOf(request.getHeader(Constants.Url.PETITION_ID, Constants.Messages.NO_PETITION_ID));
-        final List<PetitionMessagesEntity> petitions = dao.getAll(PetitionMessagesEntity.class, Order.asc("id"));
+        final List<PetitionAttachmentsEntity> petitions = dao.getAll(PetitionAttachmentsEntity.class, Order.asc("id"));
 
-        HyperExpress.tokenBinder(new TokenBinder<PetitionMessagesEntity>() {
+        HyperExpress.tokenBinder(new TokenBinder<PetitionAttachmentsEntity>() {
             @Override
-            public void bind(PetitionMessagesEntity entity, TokenResolver resolver) {
-                resolver.bind(Constants.Url.MESSAGE_ID, entity.getId().toString());
+            public void bind(PetitionAttachmentsEntity entity, TokenResolver resolver) {
+                resolver.bind(Constants.Url.ATTACHMENT_ID, entity.getId().toString());
             }
         });
 
@@ -135,13 +135,13 @@ public final class PetitionMessagesController extends BaseController {
     public final void update(final Request request, final Response response) {
         super.update(request, response);
 
-        final Integer id = Integer.valueOf(request.getHeader(Constants.Url.MESSAGE_ID, Constants.Messages.NO_MESSAGE_ID));
-        final PetitionMessagesEntity petition = request.getBodyAs(PetitionMessagesEntity.class, Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED);
+        final Integer id = Integer.valueOf(request.getHeader(Constants.Url.ATTACHMENT_ID, Constants.Messages.NO_ATTACHMENT_ID));
+        final PetitionAttachmentsEntity petition = request.getBodyAs(PetitionAttachmentsEntity.class, Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED);
         if (petition == null) {
-            throw new ItemNotFoundException(Constants.Messages.MESSAGE_NOT_FOUND);
+            throw new ItemNotFoundException(Constants.Messages.ATTACHMENT_NOT_FOUND);
         }
 
-        final Object result = dao.mergeFromEntities(petition, id, Constants.Messages.MESSAGE_NOT_FOUND);
+        final Object result = dao.mergeFromEntities(petition, id, Constants.Messages.ATTACHMENT_NOT_FOUND);
 
         if (result == null) {
             throw new HibernateException("Update failed!");
@@ -162,11 +162,11 @@ public final class PetitionMessagesController extends BaseController {
     public final void delete(final Request request, final Response response) {
         super.delete(request, response);
 
-        final Integer id = Integer.valueOf(request.getHeader(Constants.Url.MESSAGE_ID, Constants.Messages.NO_MESSAGE_ID));
-        final PetitionMessagesEntity entity = dao.get(PetitionMessagesEntity.class, id);
+        final Integer id = Integer.valueOf(request.getHeader(Constants.Url.ATTACHMENT_ID, Constants.Messages.NO_ATTACHMENT_ID));
+        final PetitionAttachmentsEntity entity = dao.get(PetitionAttachmentsEntity.class, id);
 
         if (entity == null) {
-            throw new ItemNotFoundException(Constants.Messages.MESSAGE_NOT_FOUND);
+            throw new ItemNotFoundException(Constants.Messages.ATTACHMENT_NOT_FOUND);
         }
 
         entity.setDeleteDate(new Date());

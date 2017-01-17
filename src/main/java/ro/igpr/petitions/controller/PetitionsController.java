@@ -54,7 +54,7 @@ public final class PetitionsController extends BaseController {
 
         final PetitionsEntity entity = request.getBodyAs(PetitionsEntity.class, Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED);
 
-        response.setResponseCreated();
+        dao.save(entity);
 
         // Bind the resource with link URL tokens, etc. here...
         final TokenResolver resolver = HyperExpress.bind(Constants.Url.PETITION_ID, entity.getId().toString());
@@ -63,7 +63,7 @@ public final class PetitionsController extends BaseController {
         final String locationPattern = request.getNamedUrl(HttpMethod.GET, Constants.Routes.SINGLE_PETITION);
         response.addLocationHeader(LOCATION_BUILDER.build(locationPattern, resolver));
 
-        // Return the newly-created resource...
+        response.setResponseCreated();
 
         return entity;
     }

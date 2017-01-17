@@ -3,6 +3,7 @@ package ro.igpr.petitions.config;
 import com.strategicgains.hyperexpress.HyperExpress;
 import com.strategicgains.hyperexpress.RelTypes;
 import org.restexpress.RestExpress;
+import ro.igpr.petitions.domain.CountiesEntity;
 import ro.igpr.petitions.domain.PetitionsEntity;
 
 import java.util.Map;
@@ -25,6 +26,22 @@ public abstract class Relationships {
 
                 .forClass(PetitionsEntity.class)
                 .rel(RelTypes.SELF, routes.get(Constants.Routes.SINGLE_PETITION))
-                .rel(RelTypes.UP, routes.get(Constants.Routes.SINGLE_PETITION));
+                .rel(RelTypes.UP, routes.get(Constants.Routes.SINGLE_PETITION))
+
+
+                .forCollectionOf(CountiesEntity.class)
+                .rel(RelTypes.SELF, routes.get(Constants.Routes.COUNTY_COLLECTION))
+                .withQuery("limit={limit}")
+                .withQuery("offset={offset}")
+                .rel(RelTypes.NEXT, routes.get(Constants.Routes.COUNTY_COLLECTION) + "?offset={nextOffset}")
+                .withQuery("limit={limit}")
+                .optional()
+                .rel(RelTypes.PREV, routes.get(Constants.Routes.COUNTY_COLLECTION) + "?offset={prevOffset}")
+                .withQuery("limit={limit}")
+                .optional()
+
+                .forClass(CountiesEntity.class)
+                .rel(RelTypes.SELF, routes.get(Constants.Routes.SINGLE_COUNTY))
+                .rel(RelTypes.UP, routes.get(Constants.Routes.SINGLE_COUNTY));
     }
 }

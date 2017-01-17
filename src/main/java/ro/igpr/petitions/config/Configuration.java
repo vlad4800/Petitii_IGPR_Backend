@@ -3,6 +3,7 @@ package ro.igpr.petitions.config;
 import org.restexpress.RestExpress;
 import org.restexpress.util.Environment;
 import ro.igpr.petitions.controller.CountiesController;
+import ro.igpr.petitions.controller.PetitionAttachmentsController;
 import ro.igpr.petitions.controller.PetitionMessagesController;
 import ro.igpr.petitions.controller.PetitionsController;
 
@@ -38,6 +39,7 @@ public final class Configuration
     private PetitionsController petitionsController;
     private CountiesController countiesController;
     private PetitionMessagesController petitionMessagesController;
+    private PetitionAttachmentsController petitionAttachmentsController;
 
 
     @Override
@@ -63,6 +65,7 @@ public final class Configuration
         petitionsController = new PetitionsController();
         countiesController = new CountiesController();
         petitionMessagesController = new PetitionMessagesController();
+        petitionAttachmentsController = new PetitionAttachmentsController();
     }
 
     public final int getPort() {
@@ -111,5 +114,9 @@ public final class Configuration
 
     public PetitionMessagesController getPetitionMessagesController() {
         return petitionMessagesController;
+    }
+
+    public PetitionAttachmentsController getPetitionAttachmentsController() {
+        return petitionAttachmentsController;
     }
 }

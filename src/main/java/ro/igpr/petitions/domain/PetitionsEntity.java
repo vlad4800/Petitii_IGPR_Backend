@@ -28,6 +28,7 @@ public class PetitionsEntity extends BaseEntity {
     private String phone;
 
     private List<PetitionMessagesEntity> messages;
+    private List<PetitionAttachmentsEntity> attachments;
 
     @Basic
     @Column(name = "`petition_county_id`", nullable = false, insertable = true, updatable = true)
@@ -118,6 +119,15 @@ public class PetitionsEntity extends BaseEntity {
 
     public void setMessages(List<PetitionMessagesEntity> messages) {
         this.messages = messages;
+    }
+
+    @OneToMany(mappedBy = "petitionId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    public List<PetitionAttachmentsEntity> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<PetitionAttachmentsEntity> attachments) {
+        this.attachments = attachments;
     }
 
     @Override

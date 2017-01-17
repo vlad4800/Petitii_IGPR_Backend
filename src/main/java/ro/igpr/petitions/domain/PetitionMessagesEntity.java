@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "petition_messages")
 @DynamicUpdate
-@ApiModel(value = "Petition Messages Item",
+@ApiModel(value = "Petition Message Item",
         description = "The list of petition messages",
         parent = BaseEntity.class
 )
@@ -68,4 +68,38 @@ public class PetitionMessagesEntity extends BaseEntity {
         this.message = message;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PetitionMessagesEntity)) return false;
+        if (!super.equals(o)) return false;
+
+        PetitionMessagesEntity that = (PetitionMessagesEntity) o;
+
+        if (getPetitionId() != null ? !getPetitionId().equals(that.getPetitionId()) : that.getPetitionId() != null)
+            return false;
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
+        if (getSubject() != null ? !getSubject().equals(that.getSubject()) : that.getSubject() != null) return false;
+        return getMessage() != null ? getMessage().equals(that.getMessage()) : that.getMessage() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (getPetitionId() != null ? getPetitionId().hashCode() : 0);
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getSubject() != null ? getSubject().hashCode() : 0);
+        result = 31 * result + (getMessage() != null ? getMessage().hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PetitionMessagesEntity{" +
+                "petitionId=" + petitionId +
+                ", name='" + name + '\'' +
+                ", subject='" + subject + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

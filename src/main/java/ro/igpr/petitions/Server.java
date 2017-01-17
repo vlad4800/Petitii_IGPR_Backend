@@ -1,5 +1,7 @@
 package ro.igpr.petitions;
 
+import com.strategicgains.hyperexpress.HyperExpress;
+import com.strategicgains.hyperexpress.domain.hal.HalResourceFactory;
 import com.strategicgains.repoexpress.exception.DuplicateItemException;
 import com.strategicgains.repoexpress.exception.InvalidObjectIdException;
 import com.strategicgains.repoexpress.exception.ItemNotFoundException;
@@ -14,8 +16,11 @@ import org.restexpress.RestExpress;
 import org.restexpress.exception.BadRequestException;
 import org.restexpress.exception.ConflictException;
 import org.restexpress.exception.NotFoundException;
+import org.restexpress.plugin.hyperexpress.HyperExpressPlugin;
+import org.restexpress.plugin.hyperexpress.Linkable;
 import org.restexpress.plugin.version.VersionPlugin;
 import ro.igpr.petitions.config.Configuration;
+import ro.igpr.petitions.config.Relationships;
 import ro.igpr.petitions.config.Routes;
 import ro.igpr.petitions.pipeline.ConsoleLogMessageObserver;
 import ro.igpr.petitions.postprocessor.LastModifiedHeaderPostprocessor;
@@ -55,7 +60,7 @@ public class Server {
                 .setExecutorThreadCount(config.getExecutorThreadPoolSize());
 
         Routes.define(config, server);
-//        Relationships.define(server);
+        Relationships.define(server);
         configurePlugins(config, server);
         mapExceptions(server);
     }
@@ -79,7 +84,7 @@ public class Server {
     private final static void configurePlugins(Configuration config,
                                                RestExpress server) {
         new VersionPlugin(config.getApiVersion())         // Supply the version string here.
-                .path(config.getApiVersionPath())            // optional. Supply the version route URL here. Defaults to "/version"
+//                .path(config.getApiVersionPath())            // optional. Supply the version route URL here. Defaults to "/version"
 //                .flag("version 1")          // optional. Set a flag on the request for this route.
 //                .parameter("name", object)   // optional. Set a parameter on the request for this route.
                 .register(server);
@@ -90,8 +95,14 @@ public class Server {
                 .flag(Flags.Auth.PUBLIC_ROUTE)
                 .register(server);
 
-//        new HyperExpressPlugin(Linkable.class)
-//                .register(server);
+        new HyperExpressPlugin(Linkable.class)
+                .register(server);
+
+        HyperExpress.registerResourceFactoryStrategy(new HalResourceFactory(), "application/hal+json");
+        HalResourceFactory halFactory = new HalResourceFactory();
+//        HyperExpress.registerResourceFactoryStrategy(halFactory, "application/hal+json");
+        HyperExpress.registerResourceFactoryStrategy(halFactory, "application/json");
+
 
         new CacheControlPlugin()
                 .register(server);

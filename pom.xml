@@ -9,6 +9,10 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <properties>
+        <environmentName>vlad</environmentName>
+    </properties>
+
     <dependencies>
 
         <!-- https://mvnrepository.com/artifact/com.strategicgains/RestExpress -->
@@ -168,9 +172,10 @@
 
     <profiles>
         <profile>
-            <id>config.vlad</id>
+            <id>vlad</id>
             <properties>
-                <configFolder>src/main/resources/config.vlad</configFolder>
+                <environmentName>vlad</environmentName>
+                <configFolder>config\${environmentName}</configFolder>
             </properties>
         </profile>
     </profiles>
@@ -178,18 +183,13 @@
 
     <build>
         <defaultGoal>package</defaultGoal>
-
-
         <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
             <resource>
                 <directory>${configFolder}</directory>
                 <excludes>
                     <exclude>environment.properties</exclude>
-                    <exclude>log4j2.xml</exclude>
+                    <exclude>hibernate.cfg.xml</exclude>
+                    <!--<exclude>log4j2.xml</exclude>-->
                 </excludes>
             </resource>
             <!-- Copy configuration files to the config/environmentName folder -->
@@ -200,15 +200,6 @@
                     <include>environment.properties</include>
                     <include>log4j2.xml</include>
                     <!--<include>log4j2.xml</include>-->
-                </includes>
-            </resource>
-            <!-- Copy the geolocation database to the 'geo' folder -->
-            <resource>
-                <directory>geo</directory>
-                <targetPath>${project.build.directory}/geo</targetPath>
-                <includes>
-                    <include>**/*.mmdb</include>
-                    <include>**/*.dat</include>
                 </includes>
             </resource>
         </resources>

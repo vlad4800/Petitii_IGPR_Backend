@@ -10,6 +10,12 @@ import org.hibernate.HibernateException;
 import org.hibernate.criterion.Order;
 import org.restexpress.Request;
 import org.restexpress.Response;
+import org.restexpress.common.query.QueryFilter;
+import org.restexpress.common.query.QueryOrder;
+import org.restexpress.common.query.QueryRange;
+import org.restexpress.query.QueryFilters;
+import org.restexpress.query.QueryOrders;
+import org.restexpress.query.QueryRanges;
 import ro.igpr.petitions.config.Constants;
 import ro.igpr.petitions.domain.CountiesEntity;
 
@@ -54,17 +60,17 @@ public final class CountiesController extends BaseController {
 
         final CountiesEntity entity = request.getBodyAs(CountiesEntity.class, Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED);
 
-        response.setResponseCreated();
+        dao.save(entity);
+
 
         // Bind the resource with link URL tokens, etc. here...
-        final TokenResolver resolver = HyperExpress.bind(Constants.Url.ID, entity.getId().toString());
+        final TokenResolver resolver = HyperExpress.bind(Constants.Url.COUNTY_ID, entity.getId().toString());
 
         // Include the Location header...
         final String locationPattern = request.getNamedUrl(HttpMethod.GET, Constants.Routes.SINGLE_COUNTY);
         response.addLocationHeader(LOCATION_BUILDER.build(locationPattern, resolver));
 
-        // Return the newly-created resource...
-
+        response.setResponseCreated();
         return entity;
     }
 
@@ -82,14 +88,14 @@ public final class CountiesController extends BaseController {
 
         super.read(request, response);
 
-        final Integer petitionId = Integer.valueOf(request.getHeader(Constants.Url.ID, Constants.Messages.NO_COUNTY_ID));
+        final Integer petitionId = Integer.valueOf(request.getHeader(Constants.Url.COUNTY_ID, Constants.Messages.NO_COUNTY_ID));
 
         final CountiesEntity county = dao.get(CountiesEntity.class, petitionId);
         if (county == null) {
             throw new ItemNotFoundException(Constants.Messages.COUNTY_NOT_FOUND);
         }
 
-        HyperExpress.bind(Constants.Url.ID, county.getId().toString());
+        HyperExpress.bind(Constants.Url.COUNTY_ID, county.getId().toString());
 
         return county;
     }
@@ -106,16 +112,20 @@ public final class CountiesController extends BaseController {
     public final List<CountiesEntity> readAll(final Request request, final Response response) {
         super.readAll(request, response);
 
+        QueryFilter filter = QueryFilters.parseFrom(request);
+        QueryOrder order = QueryOrders.parseFrom(request);
+        QueryRange range = QueryRanges.parseFrom(request, 100);
 
         final List<CountiesEntity> counties = dao.getAll(CountiesEntity.class, Order.asc("id"));
 
         HyperExpress.tokenBinder(new TokenBinder<CountiesEntity>() {
             @Override
             public void bind(CountiesEntity entity, TokenResolver resolver) {
-                resolver.bind(Constants.Url.ID, entity.getId().toString());
+                resolver.bind(Constants.Url.COUNTY_ID, entity.getId().toString());
             }
         });
 
+        response.setCollectionResponse(range, counties.size(), counties.size());
         return counties;
     }
 
@@ -131,7 +141,7 @@ public final class CountiesController extends BaseController {
     public final void update(final Request request, final Response response) {
         super.update(request, response);
 
-        final Integer petitionId = Integer.valueOf(request.getHeader(Constants.Url.ID, Constants.Messages.NO_COUNTY_ID));
+        final Integer petitionId = Integer.valueOf(request.getHeader(Constants.Url.COUNTY_ID, Constants.Messages.NO_COUNTY_ID));
         final CountiesEntity county = request.getBodyAs(CountiesEntity.class, Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED);
         if (county == null) {
             throw new ItemNotFoundException(Constants.Messages.COUNTY_NOT_FOUND);
@@ -158,7 +168,7 @@ public final class CountiesController extends BaseController {
     public final void delete(final Request request, final Response response) {
         super.delete(request, response);
 
-        final Integer petitionId = Integer.valueOf(request.getHeader(Constants.Url.ID, Constants.Messages.NO_COUNTY_ID));
+        final Integer petitionId = Integer.valueOf(request.getHeader(Constants.Url.COUNTY_ID, Constants.Messages.NO_COUNTY_ID));
         final CountiesEntity entity = dao.get(CountiesEntity.class, petitionId);
 
         if (entity == null) {
