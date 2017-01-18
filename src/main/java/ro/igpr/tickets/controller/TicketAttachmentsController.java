@@ -6,7 +6,6 @@ import com.strategicgains.hyperexpress.builder.TokenResolver;
 import com.strategicgains.repoexpress.exception.ItemNotFoundException;
 import com.wordnik.swagger.annotations.*;
 import io.netty.handler.codec.http.HttpMethod;
-import org.hibernate.HibernateException;
 import org.hibernate.criterion.Order;
 import org.restexpress.Request;
 import org.restexpress.Response;
@@ -14,7 +13,9 @@ import ro.igpr.tickets.config.Constants;
 import ro.igpr.tickets.domain.TicketAttachmentsEntity;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class TicketAttachmentsController extends BaseController {
 
@@ -37,8 +38,8 @@ public final class TicketAttachmentsController extends BaseController {
             @ApiResponse(code = 409, message = Constants.Messages.GENERIC_DATA_CONFLICT)
     })
 
-    @ApiOperation(value = "Create a new attachment.",
-            notes = "Create a new attachment",
+    @ApiOperation(value = "Create a new ticket attachment.",
+            notes = "Create a new ticket attachment",
             response = TicketAttachmentsEntity.class,
             position = 0)
 
@@ -51,11 +52,9 @@ public final class TicketAttachmentsController extends BaseController {
 
         super.create(request, response);
 
-        final Integer ticketId = Integer.valueOf(request.getHeader(Constants.Url.TICKET_ID, Constants.Messages.NO_TICKET_ID));
+        final Long ticketId = Long.valueOf(request.getHeader(Constants.Url.TICKET_ID, Constants.Messages.NO_TICKET_ID));
 
         final TicketAttachmentsEntity entity = request.getBodyAs(TicketAttachmentsEntity.class, Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED);
-
-        entity.setTicketId(ticketId);
 
         dao.save(entity);
 
@@ -87,7 +86,7 @@ public final class TicketAttachmentsController extends BaseController {
 
         super.read(request, response);
 
-        final Integer id = Integer.valueOf(request.getHeader(Constants.Url.ATTACHMENT_ID, Constants.Messages.NO_ATTACHMENT_ID));
+        final Long id = Long.valueOf(request.getHeader(Constants.Url.ATTACHMENT_ID, Constants.Messages.NO_ATTACHMENT_ID));
 
         final TicketAttachmentsEntity ticket = dao.get(TicketAttachmentsEntity.class, id);
         if (ticket == null) {
@@ -111,8 +110,10 @@ public final class TicketAttachmentsController extends BaseController {
     public final List<TicketAttachmentsEntity> readAll(final Request request, final Response response) {
         super.readAll(request, response);
 
-        final Integer ticketId = Integer.valueOf(request.getHeader(Constants.Url.TICKET_ID, Constants.Messages.NO_TICKET_ID));
-        final List<TicketAttachmentsEntity> tickets = dao.getAll(TicketAttachmentsEntity.class, Order.asc("id"));
+        final Long ticketId = Long.valueOf(request.getHeader(Constants.Url.TICKET_ID, Constants.Messages.NO_TICKET_ID));
+        Map<String, Object> fields = new HashMap<>();
+        fields.put("ticketId", ticketId);
+        final List<TicketAttachmentsEntity> tickets = dao.getAll(TicketAttachmentsEntity.class, fields, Order.asc("id"));
 
         HyperExpress.tokenBinder(new TokenBinder<TicketAttachmentsEntity>() {
             @Override
@@ -122,33 +123,6 @@ public final class TicketAttachmentsController extends BaseController {
         });
 
         return tickets;
-    }
-
-    /**
-     * Updates ticket details
-     *
-     * @param request
-     * @param response
-     */
-    @ApiImplicitParams({
-
-    })
-    public final void update(final Request request, final Response response) {
-        super.update(request, response);
-
-        final Integer id = Integer.valueOf(request.getHeader(Constants.Url.ATTACHMENT_ID, Constants.Messages.NO_ATTACHMENT_ID));
-        final TicketAttachmentsEntity ticket = request.getBodyAs(TicketAttachmentsEntity.class, Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED);
-        if (ticket == null) {
-            throw new ItemNotFoundException(Constants.Messages.ATTACHMENT_NOT_FOUND);
-        }
-
-        final Object result = dao.mergeFromEntities(ticket, id, Constants.Messages.ATTACHMENT_NOT_FOUND);
-
-        if (result == null) {
-            throw new HibernateException("Update failed!");
-        }
-
-        response.setResponseNoContent();
     }
 
     /**
@@ -163,7 +137,7 @@ public final class TicketAttachmentsController extends BaseController {
     public final void delete(final Request request, final Response response) {
         super.delete(request, response);
 
-        final Integer id = Integer.valueOf(request.getHeader(Constants.Url.ATTACHMENT_ID, Constants.Messages.NO_ATTACHMENT_ID));
+        final Long id = Long.valueOf(request.getHeader(Constants.Url.ATTACHMENT_ID, Constants.Messages.NO_ATTACHMENT_ID));
         final TicketAttachmentsEntity entity = dao.get(TicketAttachmentsEntity.class, id);
 
         if (entity == null) {

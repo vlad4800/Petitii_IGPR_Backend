@@ -14,7 +14,9 @@ import ro.igpr.tickets.config.Constants;
 import ro.igpr.tickets.domain.TicketMessagesEntity;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class TicketMessagesController extends BaseController {
 
@@ -51,7 +53,7 @@ public final class TicketMessagesController extends BaseController {
 
         super.create(request, response);
 
-        final Integer ticketId = Integer.valueOf(request.getHeader(Constants.Url.TICKET_ID, Constants.Messages.NO_TICKET_ID));
+        final Long ticketId = Long.valueOf(request.getHeader(Constants.Url.TICKET_ID, Constants.Messages.NO_TICKET_ID));
 
         final TicketMessagesEntity entity = request.getBodyAs(TicketMessagesEntity.class, Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED);
 
@@ -85,7 +87,7 @@ public final class TicketMessagesController extends BaseController {
 
         super.read(request, response);
 
-        final Integer id = Integer.valueOf(request.getHeader(Constants.Url.MESSAGE_ID, Constants.Messages.NO_MESSAGE_ID));
+        final Long id = Long.valueOf(request.getHeader(Constants.Url.MESSAGE_ID, Constants.Messages.NO_MESSAGE_ID));
 
         final TicketMessagesEntity ticket = dao.get(TicketMessagesEntity.class, id);
         if (ticket == null) {
@@ -109,8 +111,10 @@ public final class TicketMessagesController extends BaseController {
     public final List<TicketMessagesEntity> readAll(final Request request, final Response response) {
         super.readAll(request, response);
 
-        final Integer ticketId = Integer.valueOf(request.getHeader(Constants.Url.TICKET_ID, Constants.Messages.NO_TICKET_ID));
-        final List<TicketMessagesEntity> tickets = dao.getAll(TicketMessagesEntity.class, Order.asc("id"));
+        final Long ticketId = Long.valueOf(request.getHeader(Constants.Url.TICKET_ID, Constants.Messages.NO_TICKET_ID));
+        Map<String, Object> fields = new HashMap<>();
+        fields.put("ticketId", ticketId);
+        final List<TicketMessagesEntity> tickets = dao.getAll(TicketMessagesEntity.class, fields, Order.asc("id"));
 
         HyperExpress.tokenBinder(new TokenBinder<TicketMessagesEntity>() {
             @Override
@@ -134,7 +138,7 @@ public final class TicketMessagesController extends BaseController {
     public final void update(final Request request, final Response response) {
         super.update(request, response);
 
-        final Integer id = Integer.valueOf(request.getHeader(Constants.Url.MESSAGE_ID, Constants.Messages.NO_MESSAGE_ID));
+        final Long id = Long.valueOf(request.getHeader(Constants.Url.MESSAGE_ID, Constants.Messages.NO_MESSAGE_ID));
         final TicketMessagesEntity ticket = request.getBodyAs(TicketMessagesEntity.class, Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED);
         if (ticket == null) {
             throw new ItemNotFoundException(Constants.Messages.MESSAGE_NOT_FOUND);
@@ -161,7 +165,7 @@ public final class TicketMessagesController extends BaseController {
     public final void delete(final Request request, final Response response) {
         super.delete(request, response);
 
-        final Integer id = Integer.valueOf(request.getHeader(Constants.Url.MESSAGE_ID, Constants.Messages.NO_MESSAGE_ID));
+        final Long id = Long.valueOf(request.getHeader(Constants.Url.MESSAGE_ID, Constants.Messages.NO_MESSAGE_ID));
         final TicketMessagesEntity entity = dao.get(TicketMessagesEntity.class, id);
 
         if (entity == null) {

@@ -2,9 +2,9 @@
 REST Api pentru petitii online Politie.
 
 ## Tehnologii folosite
-- [RestExpress] (https://github.com/RestExpress/RestExpress)
-- [MariDB/Mysql] (https://mariadb.org/)
-- [Hibernate ORM] (http://hibernate.org/orm/)
+- [RestExpress 0.11.3] (https://github.com/RestExpress/RestExpress)
+- [MariDB 10.1.20] (https://mariadb.org/)
+- [Hibernate ORM 5.2.3] (http://hibernate.org/orm/)
 - [Swagger] (http://swagger.io/)
 - [Maven] (https://maven.apache.org/)
 

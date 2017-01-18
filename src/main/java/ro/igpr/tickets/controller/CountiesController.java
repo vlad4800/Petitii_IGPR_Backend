@@ -3,7 +3,6 @@ package ro.igpr.tickets.controller;
 import com.strategicgains.hyperexpress.HyperExpress;
 import com.strategicgains.hyperexpress.builder.TokenBinder;
 import com.strategicgains.hyperexpress.builder.TokenResolver;
-import com.wordnik.swagger.annotations.ApiImplicitParams;
 import org.hibernate.criterion.Order;
 import org.restexpress.Request;
 import org.restexpress.Response;

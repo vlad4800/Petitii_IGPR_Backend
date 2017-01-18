@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Jan 18, 2017 at 01:35 PM
+-- Generation Time: Jan 18, 2017 at 10:51 PM
 -- Server version: 10.1.20-MariaDB
 -- PHP Version: 7.0.14
 
@@ -48,6 +48,8 @@ DROP TABLE IF EXISTS `tickets`;
 CREATE TABLE IF NOT EXISTS `tickets` (
 `id` int(10) unsigned NOT NULL,
   `ticket_county_id` smallint(6) NOT NULL,
+  `type` enum('furt','crima','viol','generic') NOT NULL DEFAULT 'generic',
+  `device_id` varchar(100) NOT NULL,
   `ip` varchar(50) NOT NULL,
   `name` varchar(200) NOT NULL,
   `email` varchar(200) NOT NULL,
@@ -56,10 +58,11 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   `cnp` varchar(13) NOT NULL,
   `phone` varchar(50) NOT NULL,
   `description` text NOT NULL,
+  `response_type` enum('email','postal') NOT NULL DEFAULT 'email',
   `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` datetime DEFAULT NULL,
   `delete_date` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -72,11 +75,12 @@ CREATE TABLE IF NOT EXISTS `ticket_attachments` (
 `id` int(10) unsigned NOT NULL,
   `ticket_id` int(10) unsigned NOT NULL,
   `path` varchar(250) NOT NULL,
+  `url` varchar(2083) NOT NULL,
   `content_type` varchar(50) NOT NULL,
   `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` datetime DEFAULT NULL,
   `delete_date` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -94,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `ticket_messages` (
   `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` datetime DEFAULT NULL,
   `delete_date` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Indexes for dumped tables
@@ -132,17 +136,17 @@ ALTER TABLE `ticket_messages`
 -- AUTO_INCREMENT for table `tickets`
 --
 ALTER TABLE `tickets`
-MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `ticket_attachments`
 --
 ALTER TABLE `ticket_attachments`
-MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT for table `ticket_messages`
 --
 ALTER TABLE `ticket_messages`
-MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- Constraints for dumped tables
 --

@@ -23,31 +23,43 @@ import javax.validation.constraints.NotNull;
 public class TicketAttachmentsEntity extends BaseEntity {
 
     @JsonIgnore
-    private Integer ticketId;
+    private Long ticketId;
 
     private String path;
+    private String url;
     private String contentType;
 
     @NotNull
     @Basic
     @Column(name = "`ticket_id`", nullable = false, insertable = true, updatable = true)
-    public Integer getTicketId() {
+    public Long getTicketId() {
         return ticketId;
     }
 
-    public void setTicketId(Integer ticketId) {
+    public void setTicketId(Long ticketId) {
         this.ticketId = ticketId;
     }
 
     @NotNull
     @Basic
-    @Column(name = "`path`", nullable = true, insertable = true, updatable = true, length = 50)
+    @Column(name = "`path`", nullable = true, insertable = true, updatable = true, length = 250)
     public String getPath() {
         return path;
     }
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    @NotNull
+    @Basic
+    @Column(name = "`url`", nullable = true, insertable = true, updatable = true, length = 2083)
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @NotNull
@@ -61,7 +73,6 @@ public class TicketAttachmentsEntity extends BaseEntity {
         this.contentType = contentType;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -73,6 +84,7 @@ public class TicketAttachmentsEntity extends BaseEntity {
         if (getTicketId() != null ? !getTicketId().equals(that.getTicketId()) : that.getTicketId() != null)
             return false;
         if (getPath() != null ? !getPath().equals(that.getPath()) : that.getPath() != null) return false;
+        if (getUrl() != null ? !getUrl().equals(that.getUrl()) : that.getUrl() != null) return false;
         return getContentType() != null ? getContentType().equals(that.getContentType()) : that.getContentType() == null;
     }
 
@@ -81,6 +93,7 @@ public class TicketAttachmentsEntity extends BaseEntity {
         int result = super.hashCode();
         result = 31 * result + (getTicketId() != null ? getTicketId().hashCode() : 0);
         result = 31 * result + (getPath() != null ? getPath().hashCode() : 0);
+        result = 31 * result + (getUrl() != null ? getUrl().hashCode() : 0);
         result = 31 * result + (getContentType() != null ? getContentType().hashCode() : 0);
         return result;
     }
@@ -90,6 +103,7 @@ public class TicketAttachmentsEntity extends BaseEntity {
         return "TicketAttachmentsEntity{" +
                 "ticketId=" + ticketId +
                 ", path='" + path + '\'' +
+                ", url='" + url + '\'' +
                 ", contentType='" + contentType + '\'' +
                 '}';
     }

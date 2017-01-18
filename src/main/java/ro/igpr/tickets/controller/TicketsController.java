@@ -54,6 +54,8 @@ public final class TicketsController extends BaseController {
 
         final TicketsEntity entity = request.getBodyAs(TicketsEntity.class, Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED);
 
+        // set the ticket IP to the IP of the request
+        entity.setIp(request.getRemoteAddress().getAddress().getHostAddress());
         dao.save(entity);
 
         // Bind the resource with link URL tokens, etc. here...
@@ -82,7 +84,7 @@ public final class TicketsController extends BaseController {
 
         super.read(request, response);
 
-        final Integer id = Integer.valueOf(request.getHeader(Constants.Url.TICKET_ID, Constants.Messages.NO_TICKET_ID));
+        final Long id = Long.valueOf(request.getHeader(Constants.Url.TICKET_ID, Constants.Messages.NO_TICKET_ID));
 
         final TicketsEntity ticket = dao.get(TicketsEntity.class, id);
         if (ticket == null) {
@@ -131,7 +133,7 @@ public final class TicketsController extends BaseController {
     public final void update(final Request request, final Response response) {
         super.update(request, response);
 
-        final Integer id = Integer.valueOf(request.getHeader(Constants.Url.TICKET_ID, Constants.Messages.NO_TICKET_ID));
+        final Long id = Long.valueOf(request.getHeader(Constants.Url.TICKET_ID, Constants.Messages.NO_TICKET_ID));
         final TicketsEntity ticket = request.getBodyAs(TicketsEntity.class, Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED);
         if (ticket == null) {
             throw new ItemNotFoundException(Constants.Messages.TICKET_NOT_FOUND);
@@ -158,7 +160,7 @@ public final class TicketsController extends BaseController {
     public final void delete(final Request request, final Response response) {
         super.delete(request, response);
 
-        final Integer id = Integer.valueOf(request.getHeader(Constants.Url.TICKET_ID, Constants.Messages.NO_TICKET_ID));
+        final Long id = Long.valueOf(request.getHeader(Constants.Url.TICKET_ID, Constants.Messages.NO_TICKET_ID));
         final TicketsEntity entity = dao.get(TicketsEntity.class, id);
 
         if (entity == null) {

@@ -37,7 +37,7 @@ public abstract class Routes {
 
         // Attachments
         server.uri("/tickets/{" + Constants.Url.TICKET_ID + "}/attachments/{" + Constants.Url.ATTACHMENT_ID + "}", config.getTicketAttachmentsController())
-                .method(HttpMethod.GET, HttpMethod.PUT, HttpMethod.DELETE)
+                .method(HttpMethod.GET, HttpMethod.DELETE)
                 .name(Constants.Routes.SINGLE_ATTACHMENT);
 
         server.uri("/tickets/{" + Constants.Url.TICKET_ID + "}/attachments", config.getTicketAttachmentsController())

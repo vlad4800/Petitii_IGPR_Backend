@@ -173,7 +173,7 @@ public class CnpValidator implements ConstraintValidator<Cnp, String> {
         }
 
         context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate("cnp.invalid." + message).addConstraintViolation();
+        context.buildConstraintViolationWithTemplate("invalid " + message).addConstraintViolation();
     }
 
 }

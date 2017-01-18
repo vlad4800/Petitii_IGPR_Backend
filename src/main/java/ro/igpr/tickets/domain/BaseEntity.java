@@ -10,7 +10,7 @@ import java.util.Date;
 public abstract class BaseEntity {
 
     @ApiModelProperty(required = true)
-    protected Integer id;
+    protected Long id;
     protected Date createDate;
     protected Date updateDate;
     protected Date deleteDate;
@@ -19,11 +19,11 @@ public abstract class BaseEntity {
     @GeneratedValue(generator = "increment")
     @GenericGenerator(name = "increment", strategy = "increment")
     @Column(name = "`id`", nullable = false, insertable = true, updatable = false, unique = true)
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

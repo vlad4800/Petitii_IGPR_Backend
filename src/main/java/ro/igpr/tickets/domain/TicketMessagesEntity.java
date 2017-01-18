@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 public class TicketMessagesEntity extends BaseEntity {
 
     @JsonIgnore
-    private Integer ticketId;
+    private Long ticketId;
 
     private String name;
     private String subject;
@@ -32,11 +32,11 @@ public class TicketMessagesEntity extends BaseEntity {
     @NotNull
     @Basic
     @Column(name = "`ticket_id`", nullable = false, insertable = true, updatable = true)
-    public Integer getTicketId() {
+    public Long getTicketId() {
         return ticketId;
     }
 
-    public void setTicketId(Integer ticketId) {
+    public void setTicketId(Long ticketId) {
         this.ticketId = ticketId;
     }
 

@@ -73,7 +73,8 @@ public class GenericDao {
             StringBuilder sb = new StringBuilder();
 
             for (ConstraintViolation c : ex.getConstraintViolations()) {
-                sb.append(c.getMessage() + ",");
+                sb.append(c.getPropertyPath()).append(" ").append(c.getMessage()).append(",");
+
             }
 
             throw new ValidationException(sb.toString().substring(0, sb.length() - 1));
@@ -135,9 +136,6 @@ public class GenericDao {
             if (order != null)
                 crit.addOrder(order);
 
-            crit.setCacheable(true);
-            crit.setCacheRegion("DimensionQueryCache");
-
             final List<T> entities = crit.list();
             tx.commit();
             if (entities != null && entities.size() > 0) return entities.get(0);
@@ -168,8 +166,7 @@ public class GenericDao {
                 for (Map.Entry<String, Object> entry : params.entrySet())
                     crit.add(Restrictions.eq(entry.getKey(), entry.getValue()));
             }
-            crit.setCacheable(true);
-            crit.setCacheRegion("DimensionQueryCache");
+
             final List<T> entities = crit.list();
             tx.commit();
             if (entities != null && entities.size() > 0) return entities.get(0);
@@ -180,12 +177,12 @@ public class GenericDao {
         }
     }
 
-    public final <T> T get(final Class<T> type, final Integer id) {
+    public final <T> T get(final Class<T> type, final Long id) {
         return get(type, id, true);
     }
 
     /***/
-    public final <T> T get(final Class<T> type, final Integer id, boolean excludeDeleted) {
+    public final <T> T get(final Class<T> type, final Long id, boolean excludeDeleted) {
 
         final Session session = sessionFactory.getCurrentSession();
         final Transaction tx = session.beginTransaction();
@@ -197,7 +194,6 @@ public class GenericDao {
             crit.add(Restrictions.eq("id", id));
 
             final List<T> entities = crit.list();
-//            final T entity = (T) sessionFactory.getCurrentSession().get(type, id);
             tx.commit();
             return (entities != null && entities.size() > 0) ? entities.get(0) : null;
         } catch (RuntimeException re) {
@@ -223,16 +219,16 @@ public class GenericDao {
     }
 
     /***/
-    public final <T> T mergeFromEntities(final T newEntity, Integer entityId) {
+    public final <T> T mergeFromEntities(final T newEntity, Long entityId) {
         return mergeFromEntities(newEntity, entityId, Constants.Messages.OBJECT_NOT_FOUND);
     }
 
     /***/
-    public final <T> T mergeFromEntities(final T newEntity, Integer entityId, String message) {
+    public final <T> T mergeFromEntities(final T newEntity, Long entityId, String message) {
         return mergeFromEntities(newEntity, null, entityId, message);
     }
 
-    public final <T> T mergeFromEntities(final T newEntity, final T passedEntity, final Integer entityId, final String message) {
+    public final <T> T mergeFromEntities(final T newEntity, final T passedEntity, final Long entityId, final String message) {
 
         final Session session = sessionFactory.getCurrentSession();
         final Transaction tx = session.beginTransaction();
