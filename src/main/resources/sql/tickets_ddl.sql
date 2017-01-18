@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Jan 17, 2017 at 11:19 AM
+-- Generation Time: Jan 18, 2017 at 01:35 PM
 -- Server version: 10.1.20-MariaDB
 -- PHP Version: 7.0.14
 
@@ -53,8 +53,9 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   `email` varchar(200) NOT NULL,
   `address` varchar(200) NOT NULL,
   `county_id` smallint(6) NOT NULL,
-  `cnp` int(11) NOT NULL,
+  `cnp` varchar(13) NOT NULL,
   `phone` varchar(50) NOT NULL,
+  `description` text NOT NULL,
   `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` datetime DEFAULT NULL,
   `delete_date` datetime DEFAULT NULL
