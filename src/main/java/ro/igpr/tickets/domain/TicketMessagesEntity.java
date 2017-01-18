@@ -8,6 +8,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by vlad4800@gmail.com on 16-Jan-17.
@@ -28,6 +29,7 @@ public class TicketMessagesEntity extends BaseEntity {
     private String subject;
     private String message;
 
+    @NotNull
     @Basic
     @Column(name = "`ticket_id`", nullable = false, insertable = true, updatable = true)
     public Integer getTicketId() {
@@ -38,6 +40,7 @@ public class TicketMessagesEntity extends BaseEntity {
         this.ticketId = ticketId;
     }
 
+    @NotNull
     @Basic
     @Column(name = "`name`", nullable = true, insertable = true, updatable = true, length = 50)
     public String getName() {
@@ -48,6 +51,7 @@ public class TicketMessagesEntity extends BaseEntity {
         this.name = name;
     }
 
+    @NotNull
     @Basic
     @Column(name = "`subject`", nullable = false, insertable = true, updatable = true, length = 255)
     public String getSubject() {
@@ -58,6 +62,7 @@ public class TicketMessagesEntity extends BaseEntity {
         this.subject = subject;
     }
 
+    @NotNull
     @Basic
     @Column(name = "`message`", nullable = false, insertable = true, updatable = true)
     public String getMessage() {

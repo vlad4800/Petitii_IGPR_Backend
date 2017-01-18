@@ -2,8 +2,11 @@ package ro.igpr.tickets.domain;
 
 import com.wordnik.swagger.annotations.ApiModel;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.validator.constraints.Email;
+import ro.igpr.tickets.persistence.validator.cnp.Cnp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -24,12 +27,14 @@ public class TicketsEntity extends BaseEntity {
     private Integer countyId;
     private String email;
     private String address;
-    private Integer cnp;
+    private String cnp;
     private String phone;
+    private String description;
 
     private List<TicketMessagesEntity> messages;
     private List<TicketAttachmentsEntity> attachments;
 
+    @NotNull
     @Basic
     @Column(name = "`ticket_county_id`", nullable = false, insertable = true, updatable = true)
     public Integer getTicketCountyId() {
@@ -40,6 +45,7 @@ public class TicketsEntity extends BaseEntity {
         this.ticketCountyId = ticketCountyId;
     }
 
+    @NotNull
     @Basic
     @Column(name = "`ip`", nullable = false, insertable = true, updatable = true, length = 50)
     public String getIp() {
@@ -50,7 +56,7 @@ public class TicketsEntity extends BaseEntity {
         this.ip = ip;
     }
 
-
+    @NotNull
     @Basic
     @Column(name = "name", nullable = false, insertable = true, updatable = true, length = 200)
     public String getName() {
@@ -61,6 +67,7 @@ public class TicketsEntity extends BaseEntity {
         this.name = name;
     }
 
+    @NotNull
     @Basic
     @Column(name = "`county_id`", nullable = false, insertable = true, updatable = true)
     public Integer getCountyId() {
@@ -71,6 +78,8 @@ public class TicketsEntity extends BaseEntity {
         this.countyId = countyId;
     }
 
+    @NotNull
+    @Email
     @Basic
     @Column(name = "`email`", nullable = false, insertable = true, updatable = true, length = 200)
     public String getEmail() {
@@ -81,6 +90,7 @@ public class TicketsEntity extends BaseEntity {
         this.email = email;
     }
 
+    @NotNull
     @Basic
     @Column(name = "`address`", nullable = false, insertable = true, updatable = true, length = 200)
     public String getAddress() {
@@ -91,16 +101,18 @@ public class TicketsEntity extends BaseEntity {
         this.address = address;
     }
 
+    @Cnp
     @Basic
-    @Column(name = "`cnp`", nullable = false, insertable = true, updatable = true)
-    public Integer getCnp() {
+    @Column(name = "`cnp`", nullable = false, insertable = true, updatable = true, length = 13)
+    public String getCnp() {
         return cnp;
     }
 
-    public void setCnp(Integer cnp) {
+    public void setCnp(String cnp) {
         this.cnp = cnp;
     }
 
+    @NotNull
     @Basic
     @Column(name = "`phone`", nullable = false, insertable = true, updatable = true, length = 50)
     public String getPhone() {
@@ -111,6 +123,16 @@ public class TicketsEntity extends BaseEntity {
         this.phone = phone;
     }
 
+    @NotNull
+    @Basic
+    @Column(name = "`description`", nullable = false, insertable = true, updatable = true)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     @OneToMany(mappedBy = "ticketId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     public List<TicketMessagesEntity> getMessages() {
@@ -141,14 +163,14 @@ public class TicketsEntity extends BaseEntity {
         if (getTicketCountyId() != null ? !getTicketCountyId().equals(that.getTicketCountyId()) : that.getTicketCountyId() != null)
             return false;
         if (getIp() != null ? !getIp().equals(that.getIp()) : that.getIp() != null) return false;
-        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null)
-            return false;
+        if (getName() != null ? !getName().equals(that.getName()) : that.getName() != null) return false;
         if (getCountyId() != null ? !getCountyId().equals(that.getCountyId()) : that.getCountyId() != null)
             return false;
         if (getEmail() != null ? !getEmail().equals(that.getEmail()) : that.getEmail() != null) return false;
         if (getAddress() != null ? !getAddress().equals(that.getAddress()) : that.getAddress() != null) return false;
         if (getCnp() != null ? !getCnp().equals(that.getCnp()) : that.getCnp() != null) return false;
-        return getPhone() != null ? getPhone().equals(that.getPhone()) : that.getPhone() == null;
+        if (getPhone() != null ? !getPhone().equals(that.getPhone()) : that.getPhone() != null) return false;
+        return getDescription() != null ? getDescription().equals(that.getDescription()) : that.getDescription() == null;
     }
 
     @Override
@@ -162,6 +184,7 @@ public class TicketsEntity extends BaseEntity {
         result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
         result = 31 * result + (getCnp() != null ? getCnp().hashCode() : 0);
         result = 31 * result + (getPhone() != null ? getPhone().hashCode() : 0);
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
         return result;
     }
 
@@ -174,8 +197,9 @@ public class TicketsEntity extends BaseEntity {
                 ", countyId=" + countyId +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
-                ", cnp=" + cnp +
+                ", cnp='" + cnp + '\'' +
                 ", phone='" + phone + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

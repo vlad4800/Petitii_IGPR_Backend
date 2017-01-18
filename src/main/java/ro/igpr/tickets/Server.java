@@ -8,7 +8,6 @@ import com.strategicgains.repoexpress.exception.ItemNotFoundException;
 import com.strategicgains.restexpress.plugin.cache.CacheControlPlugin;
 import com.strategicgains.restexpress.plugin.cors.CorsHeaderPlugin;
 import com.strategicgains.restexpress.plugin.swagger.SwaggerPlugin;
-import com.strategicgains.syntaxe.ValidationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.restexpress.Flags;
@@ -125,7 +124,7 @@ public class Server {
         server
                 .mapException(ItemNotFoundException.class, NotFoundException.class)
                 .mapException(DuplicateItemException.class, ConflictException.class)
-                .mapException(ValidationException.class, BadRequestException.class)
+                .mapException(javax.validation.ValidationException.class, BadRequestException.class)
                 .mapException(org.hibernate.QueryException.class, ConflictException.class)
                 .mapException(InvalidObjectIdException.class, BadRequestException.class)
                 .mapException(InvalidParameterException.class, BadRequestException.class)

@@ -38,10 +38,6 @@ public abstract class Relationships {
                 .optional()
                 .rel(RelTypes.PREV, routes.get(Constants.Routes.COUNTY_COLLECTION) + "?offset={prevOffset}")
                 .withQuery("limit={limit}")
-                .optional()
-
-                .forClass(CountiesEntity.class)
-                .rel(RelTypes.SELF, routes.get(Constants.Routes.SINGLE_COUNTY))
-                .rel(RelTypes.UP, routes.get(Constants.Routes.SINGLE_COUNTY));
+                .optional();
     }
 }

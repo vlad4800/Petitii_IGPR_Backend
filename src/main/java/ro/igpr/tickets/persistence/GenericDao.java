@@ -14,6 +14,9 @@ import org.hibernate.criterion.Restrictions;
 import ro.igpr.tickets.config.Constants;
 
 import javax.annotation.Resource;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -65,6 +68,15 @@ public class GenericDao {
             final T entity = (T) session.save(o);
             tx.commit();
             return entity;
+        } catch (ConstraintViolationException ex) { // catch all javax validation exceptions here and just show the message
+            tx.rollback();
+            StringBuilder sb = new StringBuilder();
+
+            for (ConstraintViolation c : ex.getConstraintViolations()) {
+                sb.append(c.getMessage() + ",");
+            }
+
+            throw new ValidationException(sb.toString().substring(0, sb.length() - 1));
         } catch (RuntimeException re) {
             tx.rollback();
             throw re;
