@@ -13,6 +13,8 @@ public final class Constants {
 
         public static final String NO_ATTACHMENT_ID = "No attachment ID supplied!";
         public static final String ATTACHMENT_NOT_FOUND = "Attachment not found!";
+        public static final String NO_FILENAME = "Please provide the fileName param!";
+        public static final String NO_CONTENT_TYPE = "Please provide the file content-type header!";
 
         public static final String NO_COUNTY_ID = "No county ID supplied!";
         public static final String COUNTY_NOT_FOUND = "County not found!";
@@ -37,6 +39,7 @@ public final class Constants {
         public static final String COUNTY_ID = "countyId";
         public static final String MESSAGE_ID = "messageId";
         public static final String ATTACHMENT_ID = "attachmentId";
+        public static final String FILE_NAME = "fileName";
     }
 
     /**

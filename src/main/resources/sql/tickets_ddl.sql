@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Jan 18, 2017 at 10:51 PM
+-- Generation Time: Jan 19, 2017 at 02:27 PM
 -- Server version: 10.1.20-MariaDB
 -- PHP Version: 7.0.14
 
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` datetime DEFAULT NULL,
   `delete_date` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -74,13 +74,13 @@ DROP TABLE IF EXISTS `ticket_attachments`;
 CREATE TABLE IF NOT EXISTS `ticket_attachments` (
 `id` int(10) unsigned NOT NULL,
   `ticket_id` int(10) unsigned NOT NULL,
-  `path` varchar(250) NOT NULL,
-  `url` varchar(2083) NOT NULL,
+  `file_name` varchar(100) NOT NULL,
+  `original_file_name` varchar(100) NOT NULL,
   `content_type` varchar(50) NOT NULL,
   `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` datetime DEFAULT NULL,
   `delete_date` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -114,7 +114,7 @@ ALTER TABLE `counties`
 -- Indexes for table `tickets`
 --
 ALTER TABLE `tickets`
- ADD PRIMARY KEY (`id`), ADD KEY `ticket_county_id` (`ticket_county_id`), ADD KEY `county_id` (`county_id`);
+ ADD PRIMARY KEY (`id`), ADD KEY `county_id` (`county_id`), ADD KEY `ticket_county_id` (`ticket_county_id`);
 
 --
 -- Indexes for table `ticket_attachments`
@@ -136,12 +136,12 @@ ALTER TABLE `ticket_messages`
 -- AUTO_INCREMENT for table `tickets`
 --
 ALTER TABLE `tickets`
-MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `ticket_attachments`
 --
 ALTER TABLE `ticket_attachments`
-MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
+MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `ticket_messages`
 --

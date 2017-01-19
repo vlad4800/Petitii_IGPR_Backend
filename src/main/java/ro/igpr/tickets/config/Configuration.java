@@ -25,6 +25,10 @@ public final class Configuration
     private static final String IO_THREAD_POOL_SIZE = "io.threadPool.size";
     private static final String CONNECT_TIMEOUT = "connectTimeout";
     private static final String KEEP_ALIVE = "keepAlive";
+    private static final String ATTACHMENTS_PATH = "attachments.path";
+    private static final String ATTACHMENTS_URL = "attachments.url";
+    private static final String DEFAULT_ATTACHMENTS_PATH = ".";
+    private static final String DEFAULT_ATTACHMENTS_URL = "/";
 
     private static String ENVIRONMENT_NAME = "vlad";
     private String apiVersionNumber;
@@ -35,6 +39,8 @@ public final class Configuration
     private int ioThreadPoolSize;
     private int connectTimeout;
     private boolean keepAlive;
+    private static String attachmentsPath;
+    private static String attachmentsUrl;
 
     private TicketsController ticketsController;
     private CountiesController countiesController;
@@ -55,6 +61,8 @@ public final class Configuration
         this.ioThreadPoolSize = Integer.parseInt(p.getProperty(IO_THREAD_POOL_SIZE, DEFAULT_IO_THREAD_POOL_SIZE));
         this.connectTimeout = Integer.parseInt(p.getProperty(CONNECT_TIMEOUT, DEFAULT_CONNECT_TIMEOUT));
         this.keepAlive = Boolean.parseBoolean(p.getProperty(KEEP_ALIVE, DEFAULT_KEEP_ALIVE));
+        attachmentsPath = p.getProperty(ATTACHMENTS_PATH, DEFAULT_ATTACHMENTS_PATH);
+        attachmentsUrl = p.getProperty(ATTACHMENTS_URL, DEFAULT_ATTACHMENTS_URL);
 
         initialize();
     }
@@ -120,5 +128,13 @@ public final class Configuration
 
     public TicketAttachmentsController getTicketAttachmentsController() {
         return ticketAttachmentsController;
+    }
+
+    public final static String getAttachmentsPath() {
+        return attachmentsPath;
+    }
+
+    public static String getAttachmentsUrl() {
+        return attachmentsUrl;
     }
 }

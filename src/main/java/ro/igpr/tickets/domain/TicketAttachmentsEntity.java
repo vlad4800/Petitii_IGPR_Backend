@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wordnik.swagger.annotations.ApiModel;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -24,10 +21,17 @@ public class TicketAttachmentsEntity extends BaseEntity {
 
     @JsonIgnore
     private Long ticketId;
-
-    private String path;
     private String url;
+    private String fileName;
+    private String originalFileName;
     private String contentType;
+
+    public TicketAttachmentsEntity(Long ticketId, String fileName, String originalFileName, String contentType) {
+        this.ticketId = ticketId;
+        this.fileName = fileName;
+        this.originalFileName = originalFileName;
+        this.contentType = contentType;
+    }
 
     @NotNull
     @Basic
@@ -40,26 +44,35 @@ public class TicketAttachmentsEntity extends BaseEntity {
         this.ticketId = ticketId;
     }
 
-    @NotNull
-    @Basic
-    @Column(name = "`path`", nullable = true, insertable = true, updatable = true, length = 250)
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    @NotNull
-    @Basic
-    @Column(name = "`url`", nullable = true, insertable = true, updatable = true, length = 2083)
+    @Transient
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @NotNull
+    @Basic
+    @Column(name = "`file_name`", nullable = false, insertable = true, updatable = true)
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    @NotNull
+    @Basic
+    @Column(name = "`original_file_name`", nullable = true, insertable = true, updatable = true, length = 2083)
+    public String getOriginalFileName() {
+        return originalFileName;
+    }
+
+    public void setOriginalFileName(String originalFileName) {
+        this.originalFileName = originalFileName;
     }
 
     @NotNull
@@ -83,8 +96,10 @@ public class TicketAttachmentsEntity extends BaseEntity {
 
         if (getTicketId() != null ? !getTicketId().equals(that.getTicketId()) : that.getTicketId() != null)
             return false;
-        if (getPath() != null ? !getPath().equals(that.getPath()) : that.getPath() != null) return false;
-        if (getUrl() != null ? !getUrl().equals(that.getUrl()) : that.getUrl() != null) return false;
+        if (getFileName() != null ? !getFileName().equals(that.getFileName()) : that.getFileName() != null)
+            return false;
+        if (getOriginalFileName() != null ? !getOriginalFileName().equals(that.getOriginalFileName()) : that.getOriginalFileName() != null)
+            return false;
         return getContentType() != null ? getContentType().equals(that.getContentType()) : that.getContentType() == null;
     }
 
@@ -92,8 +107,8 @@ public class TicketAttachmentsEntity extends BaseEntity {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (getTicketId() != null ? getTicketId().hashCode() : 0);
-        result = 31 * result + (getPath() != null ? getPath().hashCode() : 0);
-        result = 31 * result + (getUrl() != null ? getUrl().hashCode() : 0);
+        result = 31 * result + (getFileName() != null ? getFileName().hashCode() : 0);
+        result = 31 * result + (getOriginalFileName() != null ? getOriginalFileName().hashCode() : 0);
         result = 31 * result + (getContentType() != null ? getContentType().hashCode() : 0);
         return result;
     }
@@ -102,8 +117,8 @@ public class TicketAttachmentsEntity extends BaseEntity {
     public String toString() {
         return "TicketAttachmentsEntity{" +
                 "ticketId=" + ticketId +
-                ", path='" + path + '\'' +
-                ", url='" + url + '\'' +
+                ", fileName='" + fileName + '\'' +
+                ", originalFileName='" + originalFileName + '\'' +
                 ", contentType='" + contentType + '\'' +
                 '}';
     }

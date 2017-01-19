@@ -5,13 +5,19 @@ import com.strategicgains.hyperexpress.builder.TokenBinder;
 import com.strategicgains.hyperexpress.builder.TokenResolver;
 import com.strategicgains.repoexpress.exception.ItemNotFoundException;
 import com.wordnik.swagger.annotations.*;
+import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.criterion.Order;
 import org.restexpress.Request;
 import org.restexpress.Response;
+import ro.igpr.tickets.config.Configuration;
 import ro.igpr.tickets.config.Constants;
 import ro.igpr.tickets.domain.TicketAttachmentsEntity;
+import ro.igpr.tickets.util.StreamUtil;
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,14 +43,18 @@ public final class TicketAttachmentsController extends BaseController {
             @ApiResponse(code = 405, message = Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED),
             @ApiResponse(code = 409, message = Constants.Messages.GENERIC_DATA_CONFLICT)
     })
-
     @ApiOperation(value = "Create a new ticket attachment.",
             notes = "Create a new ticket attachment",
             response = TicketAttachmentsEntity.class,
             position = 0)
-
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "ticketInfo", required = true, value = "The attachment details", paramType = "body",
+            @ApiImplicitParam(name = "fileName", required = true, value = "The attached file name", paramType = "query",
+                    dataType = "string"
+            ),
+            @ApiImplicitParam(name = "Content-Type", required = true, value = "The contet-type of the file", paramType = "header",
+                    dataType = "string"
+            ),
+            @ApiImplicitParam(name = "ticketInfo", required = true, value = "The attachment binary content", paramType = "body",
                     dataType = "TicketAttachmentsEntity"
             ),
     })
@@ -53,9 +63,16 @@ public final class TicketAttachmentsController extends BaseController {
         super.create(request, response);
 
         final Long ticketId = Long.valueOf(request.getHeader(Constants.Url.TICKET_ID, Constants.Messages.NO_TICKET_ID));
+        final String originalFileName = request.getHeader(Constants.Url.FILE_NAME, Constants.Messages.NO_FILENAME);
+        final String contentType = request.getHeader(HttpHeaders.Names.CONTENT_TYPE, Constants.Messages.NO_CONTENT_TYPE);
 
-        final TicketAttachmentsEntity entity = request.getBodyAs(TicketAttachmentsEntity.class, Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED);
+        String extension = FilenameUtils.getExtension(originalFileName); // get file extension from name
+        String newFileName = RandomStringUtils.random(32, true, true) + "." + extension; // generate a random file name
+        String newFilePath = Configuration.getAttachmentsPath() + File.separator + newFileName;
 
+        StreamUtil.copyInputStreamToDisk(request.getBodyAsStream(), newFilePath);
+
+        TicketAttachmentsEntity entity = new TicketAttachmentsEntity(ticketId, newFileName, originalFileName, contentType);
         dao.save(entity);
 
         // Bind the resource with link URL tokens, etc. here...
