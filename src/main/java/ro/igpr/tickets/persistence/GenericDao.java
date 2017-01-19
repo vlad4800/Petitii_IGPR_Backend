@@ -12,6 +12,7 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import ro.igpr.tickets.config.Constants;
+import ro.igpr.tickets.util.PasswordHash;
 
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;
@@ -19,6 +20,8 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import java.io.File;
 import java.lang.reflect.Field;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -462,5 +465,19 @@ public class GenericDao {
             tx.rollback();
             throw re;
         }
+    }
+
+    public final static String generatePasswordHash(String realPassword) {
+
+        if (realPassword == null || realPassword.length() == 0) return null;
+
+        try {
+            return PasswordHash.createHash(realPassword);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e1) {
+            e1.printStackTrace();
+        }
+        return null;
     }
 }

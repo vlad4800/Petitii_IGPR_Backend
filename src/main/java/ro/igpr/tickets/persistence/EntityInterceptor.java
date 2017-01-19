@@ -2,7 +2,9 @@ package ro.igpr.tickets.persistence;
 
 import org.hibernate.EmptyInterceptor;
 import org.hibernate.type.Type;
+import ro.igpr.tickets.config.Constants;
 import ro.igpr.tickets.domain.BaseEntity;
+import ro.igpr.tickets.domain.UsersEntity;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -38,6 +40,25 @@ public final class EntityInterceptor extends EmptyInterceptor {
             }
         }
 
+        if (entity instanceof UsersEntity) {
+
+            for (int i = 0; i < propertyNames.length; i++) {
+
+                if ("password".equals(propertyNames[i]) && currentState[i] != null) {
+                    // do not re-hash the password if we have the flag to ignore it
+                    if (!currentState[i].toString().equals(Constants.Values.IGNORE_PASSWORD)) {
+                        final String oldPass = currentState[i].toString();
+                        final String newPass = GenericDao.generatePasswordHash(oldPass);
+                        currentState[i] = newPass;
+                        somethingHasChanged = true;
+                    } else {
+                        currentState[i] = previousState[i];
+                    }
+                    break;
+                }
+            }
+        }
+
         return somethingHasChanged;
     }
 
@@ -66,7 +87,17 @@ public final class EntityInterceptor extends EmptyInterceptor {
                 }
             }
         }
-
+        if (entity instanceof UsersEntity) {
+            for (int i = 0; i < propertyNames.length; i++) {
+                if ("password".equals(propertyNames[i]) && state[i] != null) {
+                    final String oldPass = state[i].toString();
+                    final String newPass = GenericDao.generatePasswordHash(oldPass);
+                    state[i] = newPass;
+                    somethingHasChanged = true;
+                    break;
+                }
+            }
+        }
         return somethingHasChanged;
     }
 

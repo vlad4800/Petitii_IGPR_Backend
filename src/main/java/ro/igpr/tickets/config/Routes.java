@@ -44,5 +44,19 @@ public abstract class Routes {
                 .action("readAll", HttpMethod.GET)
                 .method(HttpMethod.POST)
                 .name(Constants.Routes.ATTACHMENT_COLLECTION);
+
+        // Users
+        server.uri("/users/{" + Constants.Url.USER_ID + "}", config.getUsersController())
+                .method(HttpMethod.GET, HttpMethod.PUT, HttpMethod.DELETE)
+                .name(Constants.Routes.SINGLE_USER);
+
+        server.uri("/users", config.getUsersController())
+                .action("readAll", HttpMethod.GET)
+                .method(HttpMethod.POST)
+                .name(Constants.Routes.USER_COLLECTION);
+
+        server.uri("/users/{" + Constants.Url.USER_ID + "}" + "/tickets", config.getTicketsController())
+                .action("readAll", HttpMethod.GET)
+                .name(Constants.Routes.TICKET_COLLECTION);
     }
 }

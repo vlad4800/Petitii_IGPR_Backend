@@ -2,10 +2,7 @@ package ro.igpr.tickets.config;
 
 import org.restexpress.RestExpress;
 import org.restexpress.util.Environment;
-import ro.igpr.tickets.controller.CountiesController;
-import ro.igpr.tickets.controller.TicketAttachmentsController;
-import ro.igpr.tickets.controller.TicketMessagesController;
-import ro.igpr.tickets.controller.TicketsController;
+import ro.igpr.tickets.controller.*;
 
 import java.util.Properties;
 
@@ -46,6 +43,7 @@ public final class Configuration
     private CountiesController countiesController;
     private TicketMessagesController ticketMessagesController;
     private TicketAttachmentsController ticketAttachmentsController;
+    private UsersController usersController;
 
 
     @Override
@@ -74,6 +72,7 @@ public final class Configuration
         countiesController = new CountiesController();
         ticketMessagesController = new TicketMessagesController();
         ticketAttachmentsController = new TicketAttachmentsController();
+        usersController = new UsersController();
     }
 
     public final int getPort() {
@@ -136,5 +135,9 @@ public final class Configuration
 
     public static String getAttachmentsUrl() {
         return attachmentsUrl;
+    }
+
+    public UsersController getUsersController() {
+        return usersController;
     }
 }

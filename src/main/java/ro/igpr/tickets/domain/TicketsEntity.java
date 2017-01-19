@@ -25,6 +25,7 @@ import java.util.List;
 @JsonIgnoreProperties(value = {"messages", "attachments"}, allowGetters = true)
 public class TicketsEntity extends BaseEntity {
 
+    private Long userId;
     private Integer ticketCountyId;
     private TicketType type;
     private String deviceId;
@@ -40,6 +41,16 @@ public class TicketsEntity extends BaseEntity {
 
     private List<TicketMessagesEntity> messages;
     private List<TicketAttachmentsEntity> attachments;
+
+    @Basic
+    @Column(name = "`user_id`", nullable = true, insertable = true, updatable = true)
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     @NotNull
     @Basic

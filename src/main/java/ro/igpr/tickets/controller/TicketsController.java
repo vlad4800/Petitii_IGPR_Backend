@@ -14,7 +14,9 @@ import ro.igpr.tickets.config.Constants;
 import ro.igpr.tickets.domain.TicketsEntity;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class TicketsController extends BaseController {
 
@@ -104,12 +106,20 @@ public final class TicketsController extends BaseController {
      * @return
      */
     @ApiImplicitParams({
+            @ApiImplicitParam(name = Constants.Url.USER_ID, required = false, value = "The ticket userId", paramType = "param",
+                    dataType = "int"
+            ),
     })
     public final List<TicketsEntity> readAll(final Request request, final Response response) {
         super.readAll(request, response);
 
+        final Long userId = Long.valueOf(request.getHeader(Constants.Url.USER_ID, Constants.Messages.NO_TICKET_ID));
 
-        final List<TicketsEntity> tickets = dao.getAll(TicketsEntity.class, Order.asc("id"));
+        Map<String, Object> params = new HashMap<>();
+        if (userId != null) {
+            params.put("userId", userId);
+        }
+        final List<TicketsEntity> tickets = dao.getAll(TicketsEntity.class, params, Order.asc("id"));
 
         HyperExpress.tokenBinder(new TokenBinder<TicketsEntity>() {
             @Override

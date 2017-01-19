@@ -10,6 +10,9 @@ public final class Constants {
         public static final String NO_TICKET_ID = "No ticket ID supplied!";
         public static final String TICKET_NOT_FOUND = "Ticket not found!";
 
+        public static final String NO_USER_ID = "No user ID supplied!";
+        public static final String USERT_NOT_FOUND = "User not found!";
+
         public static final String NO_MESSAGE_ID = "No message ID supplied!";
         public static final String MESSAGE_NOT_FOUND = "Message not found!";
 
@@ -41,6 +44,7 @@ public final class Constants {
 
         public static final String DEVICE_ID = "devioceId";
         public static final String TICKET_ID = "ticketId";
+        public static final String USER_ID = "userId";
         public static final String COUNTY_ID = "countyId";
         public static final String MESSAGE_ID = "messageId";
         public static final String ATTACHMENT_ID = "attachmentId";
@@ -52,6 +56,9 @@ public final class Constants {
      * to retrieve URL patterns within the controllers by name to create links in responses.
      */
     public final class Routes {
+
+        public static final String SINGLE_USER = "user.single.route";
+        public static final String USER_COLLECTION = "user.collection.route";
 
         public static final String SINGLE_TICKET = "ticket.single.route";
         public static final String TICKET_COLLECTION = "ticket.collection.route";
@@ -65,5 +72,9 @@ public final class Constants {
         public static final String SINGLE_COUNTY = "county.single.route";
         public static final String COUNTY_COLLECTION = "county.collection.route";
 
+    }
+
+    public final class Values {
+        public static final String IGNORE_PASSWORD = "##ignorePass##";
     }
 }

@@ -34,5 +34,6 @@
         <mapping class="ro.igpr.tickets.domain.CountiesEntity"/>
         <mapping class="ro.igpr.tickets.domain.TicketMessagesEntity"/>
         <mapping class="ro.igpr.tickets.domain.TicketAttachmentsEntity"/>
+        <mapping class="ro.igpr.tickets.domain.UsersEntity"/>
     </session-factory>
 </hibernate-configuration>
