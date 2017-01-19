@@ -1,10 +1,15 @@
 package ro.igpr.tickets.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wordnik.swagger.annotations.ApiModel;
 import org.hibernate.annotations.DynamicUpdate;
+import ro.igpr.tickets.util.AttachmentUtil;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -17,6 +22,7 @@ import javax.validation.constraints.NotNull;
         description = "The list of ticket attachments",
         parent = BaseEntity.class
 )
+@JsonIgnoreProperties(value = {"url"}, allowGetters = true)
 public class TicketAttachmentsEntity extends BaseEntity {
 
     @JsonIgnore
@@ -25,6 +31,9 @@ public class TicketAttachmentsEntity extends BaseEntity {
     private String fileName;
     private String originalFileName;
     private String contentType;
+
+    public TicketAttachmentsEntity() {
+    }
 
     public TicketAttachmentsEntity(Long ticketId, String fileName, String originalFileName, String contentType) {
         this.ticketId = ticketId;
@@ -44,13 +53,12 @@ public class TicketAttachmentsEntity extends BaseEntity {
         this.ticketId = ticketId;
     }
 
-    @Transient
     public String getUrl() {
-        return url;
+        return url != null ? url : AttachmentUtil.getUrlFromFileName(this.getFileName());
     }
 
     public void setUrl(String url) {
-        this.url = url;
+        this.url = url != null ? url : AttachmentUtil.getUrlFromFileName(this.getFileName());
     }
 
     @NotNull

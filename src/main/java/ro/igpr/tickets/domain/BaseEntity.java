@@ -28,7 +28,6 @@ public abstract class BaseEntity {
     }
 
     @Basic
-    @Temporal(TemporalType.DATE)
     @Column(name = "`create_date`", nullable = true, insertable = true, updatable = false)
     public Date getCreateDate() {
         return createDate;
@@ -39,7 +38,6 @@ public abstract class BaseEntity {
     }
 
     @Basic
-    @Temporal(TemporalType.DATE)
     @Column(name = "`update_date`", nullable = true, insertable = true, updatable = true)
     public Date getUpdateDate() {
         return updateDate;
@@ -51,7 +49,6 @@ public abstract class BaseEntity {
 
 
     @Basic
-    @Temporal(TemporalType.DATE)
     @Column(name = "`delete_date`", nullable = true, insertable = true, updatable = true)
     public Date getDeleteDate() {
         return deleteDate;

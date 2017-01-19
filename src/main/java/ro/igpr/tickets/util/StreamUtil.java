@@ -1,9 +1,15 @@
 package ro.igpr.tickets.util;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.restexpress.exception.ServiceException;
+import ro.igpr.tickets.config.Configuration;
+import ro.igpr.tickets.config.Constants;
+
 import java.io.*;
 
 /**
- * Created by vlad4800@gmail.com on 19-Jan-17.
+ * Utilities to write binary files that come from InputStreams to disk
  */
 public class StreamUtil {
 
@@ -24,7 +30,7 @@ public class StreamUtil {
             os = new FileOutputStream(targetFile);
             StreamUtil.copyInOutStream(is, os);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ServiceException(Constants.Messages.CANNOT_WRITE_TO_DISK);
         } finally {
             try {
                 if (is != null)
@@ -32,8 +38,31 @@ public class StreamUtil {
                 if (os != null)
                     os.close();
             } catch (IOException e) {
-                e.printStackTrace();
             }
         }
+    }
+
+    public final static String writeFileFromStreamToDisk(Long ticketId, String originalFileName, InputStream is) {
+        String extension = FilenameUtils.getExtension(originalFileName); // get file extension from name
+        String newFileName = ticketId + RandomStringUtils.random(6, true, true) + "." + extension; // generate a random file name
+        String folderName = AttachmentUtil.getFolderFromFileName(newFileName);
+
+        File theDir = new File(folderName);
+        if (!theDir.exists()) {
+            boolean result = false;
+            try {
+                theDir.mkdir();
+                result = true;
+            } catch (SecurityException se) {
+                throw new ServiceException(Constants.Messages.CANNOT_WRITE_TO_DISK);
+            }
+            if (result) {
+                String newFilePath = Configuration.getAttachmentsPath() + File.separator + folderName + File.separator + newFileName;
+                StreamUtil.copyInputStreamToDisk(is, newFilePath);
+            } else {
+                throw new ServiceException(Constants.Messages.CANNOT_WRITE_TO_DISK);
+            }
+        }
+        return newFileName;
     }
 }

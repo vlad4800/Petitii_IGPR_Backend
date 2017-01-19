@@ -7,17 +7,13 @@ import com.strategicgains.repoexpress.exception.ItemNotFoundException;
 import com.wordnik.swagger.annotations.*;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.criterion.Order;
 import org.restexpress.Request;
 import org.restexpress.Response;
-import ro.igpr.tickets.config.Configuration;
 import ro.igpr.tickets.config.Constants;
 import ro.igpr.tickets.domain.TicketAttachmentsEntity;
 import ro.igpr.tickets.util.StreamUtil;
 
-import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +31,7 @@ public final class TicketAttachmentsController extends BaseController {
      * @param request
      * @param response
      * @return
+     * @TODO Check if ticket actually exists
      */
     @ApiResponses({
             @ApiResponse(code = 201, message = Constants.Messages.OBJECT_CREATED, response = TicketAttachmentsEntity.class),
@@ -66,26 +63,29 @@ public final class TicketAttachmentsController extends BaseController {
         final String originalFileName = request.getHeader(Constants.Url.FILE_NAME, Constants.Messages.NO_FILENAME);
         final String contentType = request.getHeader(HttpHeaders.Names.CONTENT_TYPE, Constants.Messages.NO_CONTENT_TYPE);
 
-        String extension = FilenameUtils.getExtension(originalFileName); // get file extension from name
-        String newFileName = RandomStringUtils.random(32, true, true) + "." + extension; // generate a random file name
-        String newFilePath = Configuration.getAttachmentsPath() + File.separator + newFileName;
+        TicketAttachmentsEntity entity = null;
 
-        StreamUtil.copyInputStreamToDisk(request.getBodyAsStream(), newFilePath);
+        // write image to disk
+        String newFileName = StreamUtil.writeFileFromStreamToDisk(ticketId, originalFileName, request.getBodyAsStream());
 
-        TicketAttachmentsEntity entity = new TicketAttachmentsEntity(ticketId, newFileName, originalFileName, contentType);
-        dao.save(entity);
+        // create only if file was saved to disk
+        if (newFileName != null) {
+            entity = new TicketAttachmentsEntity(ticketId, newFileName, originalFileName, contentType);
+            dao.save(entity);
 
-        // Bind the resource with link URL tokens, etc. here...
-        final TokenResolver resolver = HyperExpress.bind(Constants.Url.ATTACHMENT_ID, entity.getId().toString());
+            // Bind the resource with link URL tokens, etc. here...
+            final TokenResolver resolver = HyperExpress.bind(Constants.Url.ATTACHMENT_ID, entity.getId().toString());
 
-        // Include the Location header...
-        final String locationPattern = request.getNamedUrl(HttpMethod.GET, Constants.Routes.SINGLE_ATTACHMENT);
-        response.addLocationHeader(LOCATION_BUILDER.build(locationPattern, resolver));
+            // Include the Location header...
+            final String locationPattern = request.getNamedUrl(HttpMethod.GET, Constants.Routes.SINGLE_ATTACHMENT);
+            response.addLocationHeader(LOCATION_BUILDER.build(locationPattern, resolver));
 
-        // Return the newly-created resource...
+            // Return the newly-created resource...
 
-        response.setResponseCreated();
-
+            response.setResponseCreated();
+        } else {
+            response.setResponseNoContent();
+        }
         return entity;
     }
 

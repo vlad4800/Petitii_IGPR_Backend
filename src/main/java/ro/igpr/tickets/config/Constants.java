@@ -5,6 +5,8 @@ public final class Constants {
     public final class Messages {
         public static final String INVALID_OBJECT_ID = "Invalid object ID supplied!";
 
+        public static final String NO_DEVICE_ID = "No device ID supplied!";
+
         public static final String NO_TICKET_ID = "No ticket ID supplied!";
         public static final String TICKET_NOT_FOUND = "Ticket not found!";
 
@@ -27,6 +29,8 @@ public final class Constants {
 
         public static final String NO_ACTION = "No method supplied!";
         public static final String FORBIDDEN_RESOURCE = "You do not have access to this resource!";
+
+        public static final String CANNOT_WRITE_TO_DISK = "Cannot write file to disk!";
     }
 
     /**
@@ -35,6 +39,7 @@ public final class Constants {
     public final class Url {
         public static final String ID = "id";
 
+        public static final String DEVICE_ID = "devioceId";
         public static final String TICKET_ID = "ticketId";
         public static final String COUNTY_ID = "countyId";
         public static final String MESSAGE_ID = "messageId";
