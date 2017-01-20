@@ -1,14 +1,16 @@
 package ro.igpr.tickets.pipeline;
 
+import io.netty.handler.codec.http.HttpHeaders;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.restexpress.Request;
 import org.restexpress.Response;
 import org.restexpress.pipeline.SimpleConsoleLogMessageObserver;
+import ro.igpr.tickets.config.Configuration;
 
-import java.io.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 /**
  * Created by Vlad on 24-Dec-14.
@@ -17,6 +19,7 @@ public final class ConsoleLogMessageObserver extends SimpleConsoleLogMessageObse
 
     private static final Logger LOG = LogManager.getLogger("");
     private final Map<String, Timer> timers = new ConcurrentHashMap<String, Timer>();
+    protected final static Pattern commaRegex = Pattern.compile("\\,");
 
     @Override
     protected final void onReceived(final Request request, final Response response) {
@@ -25,79 +28,49 @@ public final class ConsoleLogMessageObserver extends SimpleConsoleLogMessageObse
 
     @Override
     protected final void onException(Throwable exception, final Request request, final Response response) {
-        final StringBuffer sb = new StringBuffer();
-        sb.append("IP: ").append(request.getRemoteAddress()).append(" ");
-        sb.append("TOKEN:").append(request.getHeader("Authorization")).append(" ");
-        sb.append("METHOD:").append(request.getEffectiveHttpMethod().toString()).append(" ");
-        sb.append("URL:").append(request.getUrl()).append(" ");
-//        sb.append("\n\rBODY: ").append(new String(request.getBodyAsBytes())).append(" ");
-        sb.append(" threw exception: ").append(exception.getClass().getSimpleName());
-        sb.append(" with message: ").append(exception.getMessage());
 
-        sb.append(" | Gzip support: ").append(request.getHeader("Accept-Encoding"));
+        final StringBuilder sb = new StringBuilder();
+        sb.append(Constants.IP).append(getIp(request)).append(Constants.SPACE);
+        sb.append(Constants.TOKEN).append(request.getHeader(HttpHeaders.Names.AUTHORIZATION)).append(Constants.SPACE);
+        sb.append(Constants.METHOD).append(request.getEffectiveHttpMethod().toString()).append(Constants.SPACE);
+        sb.append(Constants.URL).append(request.getUrl()).append(Constants.SPACE);
+        sb.append(Constants.THREW_EXCEPTION).append(exception.getClass().getSimpleName());
+        sb.append(Constants.WITH_MESSAGE).append(exception.getMessage());
+        sb.append(Constants.GZIP_SUPPORT).append(request.getHeader(HttpHeaders.Names.ACCEPT_ENCODING));
 
-
-        if (response.getResponseStatus().code() == 500) {
-            StackTraceElement[] trace = exception.getStackTrace();
-
-            sb.append("\nexception: ");
-            for (StackTraceElement elem : trace) {
-                sb.append("\nat " + elem);
-            }
+        LOG.error(sb.toString());
+        if (!Configuration.getEnvironmentName().equals(Constants.PROD)) {
             exception.printStackTrace();
         }
-        LOG.error(sb.toString());
-        exception.printStackTrace();
-//        if (!Server.getInstance().getConfig().getEnvironmentName().equals("prod")) {
-//            exception.printStackTrace();
-//        }
-    }
-
-    public static String slurp(final InputStream is, final int bufferSize) {
-        final char[] buffer = new char[bufferSize];
-        final StringBuilder out = new StringBuilder();
-        try (Reader in = new InputStreamReader(is, "UTF-8")) {
-            for (; ; ) {
-                int rsz = in.read(buffer, 0, buffer.length);
-                if (rsz < 0)
-                    break;
-                out.append(buffer, 0, rsz);
-            }
-        } catch (UnsupportedEncodingException ex) {
-        /* ... */
-        } catch (IOException ex) {
-        /* ... */
-        }
-        return out.toString();
     }
 
     @Override
     protected final void onComplete(final Request request, final Response response) {
         final Timer timer = timers.remove(request.getCorrelationId());
-        if (timer != null) timer.stop();
+        if (timer != null) {
+            timer.stop();
+        }
 
-
-        final StringBuffer sb = new StringBuffer();
-        sb.append("IP: ").append(request.getRemoteAddress()).append(" ");
-        sb.append("TOKEN:").append(request.getHeader("Authorization"));
-        sb.append(" ");
+        final StringBuilder sb = new StringBuilder();
+        sb.append(Constants.IP).append(getIp(request)).append(Constants.SPACE);
+        sb.append(Constants.TOKEN).append(request.getHeader(HttpHeaders.Names.AUTHORIZATION));
+        sb.append(Constants.SPACE);
         sb.append(request.getEffectiveHttpMethod().toString());
-        sb.append(" ");
+        sb.append(Constants.SPACE);
         sb.append(request.getUrl());
 
         if (timer != null) {
-            sb.append(" responded with ");
+            sb.append(Constants.RESPONDED_WITH);
             sb.append(response.getResponseStatus().toString());
-            sb.append(" in ");
+            sb.append(Constants.IN);
             sb.append(timer.toString());
         } else {
-            sb.append(" responded with ");
+            sb.append(Constants.RESPONDED_WITH);
             sb.append(response.getResponseStatus().toString());
-            sb.append(" (no timer found)");
+            sb.append(Constants.NO_TIMER_FOUND);
         }
-        sb.append(" ").append(request.getHeader("User-Agent"));
-
-        sb.append(" | Gzip support: ").append(request.getHeader("Accept-Encoding"));
+        sb.append(Constants.SPACE).append(request.getHeader(HttpHeaders.Names.USER_AGENT));
+        sb.append(Constants.GZIP_SUPPORT).append(request.getHeader(HttpHeaders.Names.ACCEPT_ENCODING));
 
         LOG.info(sb.toString());
     }
@@ -118,7 +91,39 @@ public final class ConsoleLogMessageObserver extends SimpleConsoleLogMessageObse
         public final String toString() {
             final long stopTime = (stopMillis == 0 ? System.currentTimeMillis() : stopMillis);
 
-            return String.valueOf(stopTime - startMillis) + "ms";
+            return String.valueOf(stopTime - startMillis) + Constants.MS;
         }
+    }
+
+    private final static String getIp(Request request) {
+        String ip = "";
+        if (request.getHeader(Constants.X_FORWARDED_FOR) != null) {
+            ip = request.getHeader(Constants.X_FORWARDED_FOR);
+        } else {
+            ip = request.getRemoteAddress().toString();
+        }
+
+        if (ip.indexOf(Constants.COMMA) >= 0)
+            ip = commaRegex.split(ip)[0];
+
+        return ip;
+    }
+
+    private class Constants {
+        public final static String IP = "IP:";
+        public final static String TOKEN = "TOKEN:";
+        public final static String METHOD = "METHOD:";
+        public final static String URL = "URL:";
+        public final static String THREW_EXCEPTION = " threw exception: ";
+        public final static String WITH_MESSAGE = " with message: ";
+        public final static String GZIP_SUPPORT = " | Gzip support: ";
+        public final static String SPACE = " ";
+        public final static String RESPONDED_WITH = " responded with ";
+        public final static String IN = " in ";
+        public final static String NO_TIMER_FOUND = " (no timer found)";
+        public final static String X_FORWARDED_FOR = "x-forwarded-for";
+        public final static String COMMA = ",";
+        public final static String PROD = "prod";
+        public final static String MS = "ms";
     }
 }
