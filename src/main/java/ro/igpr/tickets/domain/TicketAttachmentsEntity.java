@@ -1,5 +1,6 @@
 package ro.igpr.tickets.domain;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.strategicgains.restexpress.plugin.swagger.annotations.ApiModelProperty;
@@ -56,7 +57,8 @@ public class TicketAttachmentsEntity extends BaseEntity {
         this.ticketId = ticketId;
     }
 
-    @Column(name="url", insertable = false, updatable = false)
+    @Transient
+    @JsonGetter("url")
     public String getUrl() {
         return url != null ? url : AttachmentUtil.getUrlFromFileName(this.getFileName());
     }
