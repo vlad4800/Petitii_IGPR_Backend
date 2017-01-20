@@ -182,6 +182,13 @@
             </properties>
         </profile>
         <profile>
+            <id>staging</id>
+            <properties>
+                <environmentName>staging</environmentName>
+                <configFolder>config\${environmentName}</configFolder>
+            </properties>
+        </profile>
+        <profile>
             <id>prod</id>
             <properties>
                 <environmentName>prod</environmentName>

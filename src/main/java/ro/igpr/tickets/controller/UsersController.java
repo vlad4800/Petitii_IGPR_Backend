@@ -106,7 +106,6 @@ public final class UsersController extends BaseController {
     public final List<UsersEntity> readAll(final Request request, final Response response) {
         super.readAll(request, response);
 
-
         final List<UsersEntity> users = dao.getAll(UsersEntity.class, Order.asc(Constants.Fields.ID));
 
         HyperExpress.tokenBinder(new TokenBinder<UsersEntity>() {

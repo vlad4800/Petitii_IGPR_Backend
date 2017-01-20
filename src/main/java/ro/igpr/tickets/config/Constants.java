@@ -35,6 +35,13 @@ public final class Constants {
 
         public static final String CANNOT_WRITE_TO_DISK = "Cannot write file to disk!";
         public static final String UPDATE_FAILED = "Update failed!";
+
+        public static final String AUTHORIZATION_TOKEN_INVALID = "Invalid credentials supplied";
+    }
+
+    public final class Tokens {
+        public static final String TOKEN_DEVICE_NAME = "device";
+        public static final String TOKEN_BEARER_NAME = "bearer";
     }
 
     /**
@@ -88,5 +95,7 @@ public final class Constants {
         public static final String ID = "id";
         public static final String USER_ID = "userId";
         public static final String TICKET_ID = "ticketId";
+        public static final String VALUE = "value";
+        public static final String TYPE = "type";
     }
 }

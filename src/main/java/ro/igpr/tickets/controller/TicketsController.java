@@ -106,14 +106,13 @@ public final class TicketsController extends BaseController {
      * @return
      */
     @ApiImplicitParams({
-            @ApiImplicitParam(name = Constants.Url.USER_ID, required = false, value = "The ticket userId", paramType = "param",
-                    dataType = "int"
-            ),
     })
     public final List<TicketsEntity> readAll(final Request request, final Response response) {
         super.readAll(request, response);
 
-        final Long userId = Long.valueOf(request.getHeader(Constants.Url.USER_ID, Constants.Messages.NO_TICKET_ID));
+        Long userId = null;
+        if (request.getHeader(Constants.Url.USER_ID) != null)
+            userId = Long.valueOf(request.getHeader(Constants.Url.USER_ID));
 
         Map<String, Object> params = new HashMap<>();
         if (userId != null) {

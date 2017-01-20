@@ -1,5 +1,6 @@
 package ro.igpr.tickets.persistence;
 
+import com.strategicgains.repoexpress.exception.DuplicateItemException;
 import com.strategicgains.repoexpress.exception.ItemNotFoundException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.Criteria;
@@ -15,6 +16,7 @@ import ro.igpr.tickets.config.Constants;
 import ro.igpr.tickets.util.PasswordHash;
 
 import javax.annotation.Resource;
+import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
@@ -68,9 +70,18 @@ public class GenericDao {
         final Transaction tx = session.beginTransaction();
 
         try {
+
             final T entity = (T) session.save(o);
             tx.commit();
             return entity;
+        } catch (PersistenceException ex) {
+            tx.rollback();
+            StringBuilder sb = new StringBuilder();
+            if (ex.getCause().getClass().equals(org.hibernate.exception.ConstraintViolationException.class)) {
+                org.hibernate.exception.ConstraintViolationException cve = (org.hibernate.exception.ConstraintViolationException) ex.getCause();
+                sb.append(cve.getSQLException().getLocalizedMessage());
+            }
+            throw new DuplicateItemException(sb.toString());
         } catch (ConstraintViolationException ex) { // catch all javax validation exceptions here and just show the message
             tx.rollback();
             StringBuilder sb = new StringBuilder();

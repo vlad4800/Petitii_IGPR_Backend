@@ -1,9 +1,13 @@
 package ro.igpr.tickets.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.restexpress.RestExpress;
 import org.restexpress.util.Environment;
 import ro.igpr.tickets.controller.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 
 public final class Configuration
@@ -45,6 +49,7 @@ public final class Configuration
     private TicketAttachmentsController ticketAttachmentsController;
     private UsersController usersController;
 
+    private final static ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     protected void fillValues(Properties p) {
@@ -67,12 +72,21 @@ public final class Configuration
 
     private final void initialize() {
 
+        initObjectMapper();
 
         ticketsController = new TicketsController();
         countiesController = new CountiesController();
         ticketMessagesController = new TicketMessagesController();
         ticketAttachmentsController = new TicketAttachmentsController();
         usersController = new UsersController();
+    }
+
+    private void initObjectMapper() {
+        objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        objectMapper.configure(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS, false);
+        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"));
     }
 
     public final int getPort() {
@@ -139,5 +153,9 @@ public final class Configuration
 
     public UsersController getUsersController() {
         return usersController;
+    }
+
+    public static ObjectMapper getObjectMapper() {
+        return objectMapper;
     }
 }
