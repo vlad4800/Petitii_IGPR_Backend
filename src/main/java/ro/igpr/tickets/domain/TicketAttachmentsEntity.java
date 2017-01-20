@@ -7,10 +7,7 @@ import com.wordnik.swagger.annotations.ApiModel;
 import org.hibernate.annotations.DynamicUpdate;
 import ro.igpr.tickets.util.AttachmentUtil;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -23,13 +20,13 @@ import javax.validation.constraints.NotNull;
         description = "The list of ticket attachments",
         parent = BaseEntity.class
 )
-@JsonIgnoreProperties(value = {"url"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"url"}, allowGetters = true, allowSetters = false)
 public class TicketAttachmentsEntity extends BaseEntity {
 
     @JsonIgnore
-    @ApiModelProperty(required = true)
-    private Long ticketId;
     @ApiModelProperty(hidden = true)
+    private Long ticketId;
+    @ApiModelProperty(required = false)
     private String url;
     @ApiModelProperty(hidden = true)
     private String fileName;
@@ -59,6 +56,7 @@ public class TicketAttachmentsEntity extends BaseEntity {
         this.ticketId = ticketId;
     }
 
+    @Column(name="url", insertable = false, updatable = false)
     public String getUrl() {
         return url != null ? url : AttachmentUtil.getUrlFromFileName(this.getFileName());
     }

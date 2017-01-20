@@ -2,6 +2,8 @@ package ro.igpr.tickets.util;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.restexpress.exception.ServiceException;
 import ro.igpr.tickets.config.Configuration;
 import ro.igpr.tickets.config.Constants;
@@ -13,6 +15,7 @@ import java.io.*;
  */
 public class StreamUtil {
 
+    private static final Logger LOG = LogManager.getLogger("StreamUtil");
 
     public static final void copyInOutStream(InputStream input, OutputStream output) throws IOException {
         byte[] buffer = new byte[8192];
@@ -28,6 +31,7 @@ public class StreamUtil {
         try {
             File targetFile = new File(target);
             os = new FileOutputStream(targetFile);
+
             StreamUtil.copyInOutStream(is, os);
         } catch (IOException e) {
             throw new ServiceException(Constants.Messages.CANNOT_WRITE_TO_DISK);
@@ -45,7 +49,7 @@ public class StreamUtil {
     public final static String writeFileFromStreamToDisk(Long ticketId, String originalFileName, InputStream is) {
         String extension = FilenameUtils.getExtension(originalFileName); // get file extension from name
         String newFileName = ticketId + RandomStringUtils.random(6, true, true) + "." + extension; // generate a random file name
-        String folderName = AttachmentUtil.getFolderFromFileName(newFileName);
+        String folderName = Configuration.getAttachmentsPath() + File.separator + AttachmentUtil.getFolderFromFileName(newFileName);
 
         File theDir = new File(folderName);
         if (!theDir.exists()) {
@@ -57,7 +61,7 @@ public class StreamUtil {
                 throw new ServiceException(Constants.Messages.CANNOT_WRITE_TO_DISK);
             }
             if (result) {
-                String newFilePath = Configuration.getAttachmentsPath() + File.separator + folderName + File.separator + newFileName;
+                String newFilePath = folderName + File.separator + newFileName;
                 StreamUtil.copyInputStreamToDisk(is, newFilePath);
             } else {
                 throw new ServiceException(Constants.Messages.CANNOT_WRITE_TO_DISK);
