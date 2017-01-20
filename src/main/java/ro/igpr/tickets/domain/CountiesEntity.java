@@ -1,5 +1,6 @@
 package ro.igpr.tickets.domain;
 
+import com.strategicgains.restexpress.plugin.swagger.annotations.ApiModelProperty;
 import com.wordnik.swagger.annotations.ApiModel;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -20,6 +21,7 @@ import javax.persistence.Table;
 )
 public class CountiesEntity extends BaseEntity {
 
+    @ApiModelProperty(required = true)
     private String name;
 
     @Basic

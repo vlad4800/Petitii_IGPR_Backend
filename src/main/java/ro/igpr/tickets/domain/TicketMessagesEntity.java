@@ -1,6 +1,7 @@
 package ro.igpr.tickets.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.strategicgains.restexpress.plugin.swagger.annotations.ApiModelProperty;
 import com.wordnik.swagger.annotations.ApiModel;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -23,10 +24,13 @@ import javax.validation.constraints.NotNull;
 public class TicketMessagesEntity extends BaseEntity {
 
     @JsonIgnore
+    @ApiModelProperty(required = true)
     private Long ticketId;
-
+    @ApiModelProperty(required = true)
     private String name;
+    @ApiModelProperty(required = true)
     private String subject;
+    @ApiModelProperty(required = true)
     private String message;
 
     @NotNull

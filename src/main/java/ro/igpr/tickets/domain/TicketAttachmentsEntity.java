@@ -2,6 +2,7 @@ package ro.igpr.tickets.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.strategicgains.restexpress.plugin.swagger.annotations.ApiModelProperty;
 import com.wordnik.swagger.annotations.ApiModel;
 import org.hibernate.annotations.DynamicUpdate;
 import ro.igpr.tickets.util.AttachmentUtil;
@@ -26,10 +27,15 @@ import javax.validation.constraints.NotNull;
 public class TicketAttachmentsEntity extends BaseEntity {
 
     @JsonIgnore
+    @ApiModelProperty(required = true)
     private Long ticketId;
+    @ApiModelProperty(hidden = true)
     private String url;
+    @ApiModelProperty(hidden = true)
     private String fileName;
+    @ApiModelProperty(required = true)
     private String originalFileName;
+    @ApiModelProperty(required = true)
     private String contentType;
 
     public TicketAttachmentsEntity() {

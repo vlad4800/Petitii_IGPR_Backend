@@ -11,8 +11,11 @@ public abstract class BaseEntity {
 
     @ApiModelProperty(required = true)
     protected Long id;
+    @ApiModelProperty(required = false)
     protected Date createDate;
+    @ApiModelProperty(required = false)
     protected Date updateDate;
+    @ApiModelProperty(required = false)
     protected Date deleteDate;
 
     @Id

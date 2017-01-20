@@ -4,6 +4,7 @@
 
 package ro.igpr.tickets.domain;
 
+import com.strategicgains.restexpress.plugin.swagger.annotations.ApiModelProperty;
 import com.wordnik.swagger.annotations.ApiModel;
 import org.restexpress.plugin.hyperexpress.Linkable;
 import ro.igpr.tickets.persistence.types.TokenType;
@@ -22,10 +23,13 @@ import java.util.Date;
 )
 public final class TokenEntity extends BaseEntity implements Linkable {
 
-
+    @ApiModelProperty(required = true)
     private Long userId;
+    @ApiModelProperty(required = true)
     private TokenType type;
+    @ApiModelProperty(required = true)
     private String value;
+    @ApiModelProperty(required = true)
     private Date expiryDate;
 
     @Basic

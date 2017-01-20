@@ -1,6 +1,7 @@
 package ro.igpr.tickets.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.strategicgains.restexpress.plugin.swagger.annotations.ApiModelProperty;
 import com.wordnik.swagger.annotations.ApiModel;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Email;
@@ -25,21 +26,36 @@ import java.util.List;
 @JsonIgnoreProperties(value = {"messages", "attachments"}, allowGetters = true)
 public class TicketsEntity extends BaseEntity {
 
+    @ApiModelProperty(required = false)
     private Long userId;
+    @ApiModelProperty(required = true)
     private Integer ticketCountyId;
+    @ApiModelProperty(required = true)
     private TicketType type;
+    @ApiModelProperty(required = false)
     private String deviceId;
+    @ApiModelProperty(required = true)
     private String ip;
+    @ApiModelProperty(required = true)
     private String name;
+    @ApiModelProperty(required = true)
     private Integer countyId;
+    @ApiModelProperty(required = true)
     private String email;
+    @ApiModelProperty(required = true)
     private String address;
+    @ApiModelProperty(required = true)
     private String cnp;
+    @ApiModelProperty(required = true)
     private String phone;
+    @ApiModelProperty(required = true)
     private String description;
+    @ApiModelProperty(required = true)
     private TicketResponse responseType;
 
+    @ApiModelProperty(access = "response")
     private List<TicketMessagesEntity> messages;
+    @ApiModelProperty(hidden = true)
     private List<TicketAttachmentsEntity> attachments;
 
     @Basic

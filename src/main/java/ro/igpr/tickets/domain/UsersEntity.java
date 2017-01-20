@@ -2,6 +2,7 @@ package ro.igpr.tickets.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.strategicgains.restexpress.plugin.swagger.annotations.ApiModelProperty;
 import com.wordnik.swagger.annotations.ApiModel;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Email;
@@ -21,17 +22,25 @@ import java.util.List;
 @JsonIgnoreProperties(value = {"tickets"}, allowGetters = true)
 public class UsersEntity extends BaseEntity {
 
+    @ApiModelProperty(required = true)
     private String deviceId;
-
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ApiModelProperty(required = true)
     private String password;
+    @ApiModelProperty(required = true)
     private String name;
+    @ApiModelProperty(required = true)
     private Integer countyId;
+    @ApiModelProperty(required = true)
     private String email;
+    @ApiModelProperty(required = true)
     private String address;
+    @ApiModelProperty(required = true)
     private String cnp;
+    @ApiModelProperty(required = true)
     private String phone;
 
+    @ApiModelProperty(hidden = true)
     private List<TicketsEntity> tickets;
 
     @Basic
