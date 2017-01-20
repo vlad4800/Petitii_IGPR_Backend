@@ -53,7 +53,7 @@ public class TicketsEntity extends BaseEntity {
     @ApiModelProperty(required = true)
     private TicketResponse responseType;
 
-    @ApiModelProperty(access = "response")
+    @ApiModelProperty(hidden = true)
     private List<TicketMessagesEntity> messages;
     @ApiModelProperty(hidden = true)
     private List<TicketAttachmentsEntity> attachments;
