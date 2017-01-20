@@ -107,7 +107,7 @@ public final class UsersController extends BaseController {
         super.readAll(request, response);
 
 
-        final List<UsersEntity> users = dao.getAll(UsersEntity.class, Order.asc("id"));
+        final List<UsersEntity> users = dao.getAll(UsersEntity.class, Order.asc(Constants.Fields.ID));
 
         HyperExpress.tokenBinder(new TokenBinder<UsersEntity>() {
             @Override
@@ -144,7 +144,7 @@ public final class UsersController extends BaseController {
         final Object result = dao.mergeFromEntities(user, id, Constants.Messages.USERT_NOT_FOUND);
 
         if (result == null) {
-            throw new HibernateException("Update failed!");
+            throw new HibernateException(Constants.Messages.UPDATE_FAILED);
         }
 
         response.setResponseNoContent();

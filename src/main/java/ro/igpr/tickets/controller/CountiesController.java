@@ -33,11 +33,7 @@ public final class CountiesController extends BaseController {
     public final List<CountiesEntity> readAll(final Request request, final Response response) {
         super.readAll(request, response);
 
-        QueryFilter filter = QueryFilters.parseFrom(request);
-        QueryOrder order = QueryOrders.parseFrom(request);
-        QueryRange range = QueryRanges.parseFrom(request, 100);
-
-        final List<CountiesEntity> counties = dao.getAll(CountiesEntity.class, Order.asc("id"));
+        final List<CountiesEntity> counties = dao.getAll(CountiesEntity.class, Order.asc(Constants.Fields.ID));
 
         HyperExpress.tokenBinder(new TokenBinder<CountiesEntity>() {
             @Override
@@ -46,7 +42,6 @@ public final class CountiesController extends BaseController {
             }
         });
 
-        response.setCollectionResponse(range, counties.size(), counties.size());
         return counties;
     }
 }

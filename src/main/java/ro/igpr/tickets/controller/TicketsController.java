@@ -117,9 +117,9 @@ public final class TicketsController extends BaseController {
 
         Map<String, Object> params = new HashMap<>();
         if (userId != null) {
-            params.put("userId", userId);
+            params.put(Constants.Fields.USER_ID, userId);
         }
-        final List<TicketsEntity> tickets = dao.getAll(TicketsEntity.class, params, Order.asc("id"));
+        final List<TicketsEntity> tickets = dao.getAll(TicketsEntity.class, params, Order.asc(Constants.Fields.ID));
 
         HyperExpress.tokenBinder(new TokenBinder<TicketsEntity>() {
             @Override
@@ -152,7 +152,7 @@ public final class TicketsController extends BaseController {
         final Object result = dao.mergeFromEntities(ticket, id, Constants.Messages.TICKET_NOT_FOUND);
 
         if (result == null) {
-            throw new HibernateException("Update failed!");
+            throw new HibernateException(Constants.Messages.UPDATE_FAILED);
         }
 
         response.setResponseNoContent();

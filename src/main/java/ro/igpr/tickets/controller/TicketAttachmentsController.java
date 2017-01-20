@@ -129,8 +129,8 @@ public final class TicketAttachmentsController extends BaseController {
 
         final Long ticketId = Long.valueOf(request.getHeader(Constants.Url.TICKET_ID, Constants.Messages.NO_TICKET_ID));
         Map<String, Object> fields = new HashMap<>();
-        fields.put("ticketId", ticketId);
-        final List<TicketAttachmentsEntity> tickets = dao.getAll(TicketAttachmentsEntity.class, fields, Order.asc("id"));
+        fields.put(Constants.Fields.TICKET_ID, ticketId);
+        final List<TicketAttachmentsEntity> tickets = dao.getAll(TicketAttachmentsEntity.class, fields, Order.asc(Constants.Fields.ID));
 
         HyperExpress.tokenBinder(new TokenBinder<TicketAttachmentsEntity>() {
             @Override
