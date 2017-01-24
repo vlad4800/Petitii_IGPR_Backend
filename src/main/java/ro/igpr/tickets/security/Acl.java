@@ -24,6 +24,7 @@ public class Acl {
 
         permissions.put(Roles.admin,
                 new HashMap<String, Boolean>() {{
+                    put(Constants.Routes.COUNTY_COLLECTION + "_" + HttpMethod.GET, true);
                     put(Constants.Routes.SINGLE_USER + "_" + HttpMethod.GET, true);
                     put(Constants.Routes.SINGLE_USER + "_" + HttpMethod.PUT, true);
                     put(Constants.Routes.SINGLE_USER + "_" + HttpMethod.DELETE, true);
@@ -35,6 +36,7 @@ public class Acl {
         );
         permissions.put(Roles.user,
                 new HashMap<String, Boolean>() {{
+                    put(Constants.Routes.COUNTY_COLLECTION + "_" + HttpMethod.GET, true);
                     put(Constants.Routes.SINGLE_TICKET + "_" + HttpMethod.GET, true);
                     put(Constants.Routes.SINGLE_TICKET + "_" + HttpMethod.PUT, true);
                     put(Constants.Routes.SINGLE_TICKET + "_" + HttpMethod.DELETE, true);
@@ -44,6 +46,7 @@ public class Acl {
         );
         permissions.put(Roles.device,
                 new HashMap<String, Boolean>() {{
+                    put(Constants.Routes.COUNTY_COLLECTION + "_" + HttpMethod.GET, true);
                     put(Constants.Routes.SINGLE_TICKET + "_" + HttpMethod.GET, true);
                     put(Constants.Routes.SINGLE_TICKET + "_" + HttpMethod.PUT, true);
                     put(Constants.Routes.SINGLE_TICKET + "_" + HttpMethod.DELETE, true);
