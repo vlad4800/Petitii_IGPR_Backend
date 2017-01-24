@@ -45,7 +45,7 @@ public final class Constants {
         public static final String CANNOT_WRITE_TO_DISK = "Cannot write file to disk!";
         public static final String UPDATE_FAILED = "Update failed!";
 
-        public static final String AUTHORIZATION_TOKEN_INVALID = "Invalid credentials supplied";
+        public static final String AUTHORIZATION_TOKEN_INVALID = "Authorization token is missing!";
 
         public static final String TOKEN_VALIDATION_FAILED = "Token generation failed!";
     }
