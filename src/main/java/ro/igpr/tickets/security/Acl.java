@@ -61,10 +61,8 @@ public class Acl {
     public boolean hasPermission(Roles role, String resource, HttpMethod method) {
 
         boolean hasPermission = DEFAULT_PERMISSION;
-        if (permissions.get(role) != null) {
-            if (permissions.get(role).get(resource + "_" + method) != null) {
-                hasPermission = permissions.get(role).get(resource + "_" + method);
-            }
+        if (permissions.get(role) != null && permissions.get(role).get(resource + "_" + method) != null) {
+            hasPermission = permissions.get(role).get(resource + "_" + method);
         }
         return hasPermission;
     }
