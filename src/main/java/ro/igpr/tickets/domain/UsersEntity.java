@@ -6,6 +6,7 @@ import com.strategicgains.restexpress.plugin.swagger.annotations.ApiModelPropert
 import com.wordnik.swagger.annotations.ApiModel;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Email;
+import ro.igpr.tickets.persistence.types.Status;
 import ro.igpr.tickets.persistence.validator.cnp.Cnp;
 
 import javax.persistence.*;
@@ -39,6 +40,8 @@ public class UsersEntity extends BaseEntity {
     private String cnp;
     @ApiModelProperty(required = true)
     private String phone;
+    @ApiModelProperty(required = false)
+    private Status status;
 
     @ApiModelProperty(hidden = true)
     private List<TicketsEntity> tickets;
@@ -129,6 +132,18 @@ public class UsersEntity extends BaseEntity {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    @Basic
+    @Column(name = "`status`", nullable = false, insertable = true, updatable = true, length = 50)
+    public Status getStatus() {
+        return status != null ? status : Status.inactive;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

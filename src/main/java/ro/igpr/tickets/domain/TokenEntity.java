@@ -24,7 +24,7 @@ import java.util.Date;
 public final class TokenEntity extends BaseEntity implements Linkable {
 
     @ApiModelProperty(required = true)
-    private Long userId;
+    private String entityId;
     @ApiModelProperty(required = true)
     private TokenType type;
     @ApiModelProperty(required = true)
@@ -33,13 +33,13 @@ public final class TokenEntity extends BaseEntity implements Linkable {
     private Date expiryDate;
 
     @Basic
-    @Column(name = "`user_id`", nullable = false, insertable = true, updatable = true)
-    public Long getUserId() {
-        return userId;
+    @Column(name = "`entity_id`", nullable = false, insertable = true, updatable = true)
+    public String getEntityId() {
+        return entityId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setEntityId(String entityId) {
+        this.entityId = entityId;
     }
 
     @Enumerated(EnumType.STRING)
@@ -83,7 +83,7 @@ public final class TokenEntity extends BaseEntity implements Linkable {
 
         TokenEntity that = (TokenEntity) o;
 
-        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+        if (entityId != null ? !entityId.equals(that.entityId) : that.entityId != null) return false;
         if (expiryDate != null ? !expiryDate.equals(that.expiryDate) : that.expiryDate != null) return false;
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
         if (value != null ? !value.equals(that.value) : that.value != null) return false;
@@ -95,7 +95,7 @@ public final class TokenEntity extends BaseEntity implements Linkable {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + (entityId != null ? entityId.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (value != null ? value.hashCode() : 0);
         result = 31 * result + (expiryDate != null ? expiryDate.hashCode() : 0);
@@ -105,7 +105,7 @@ public final class TokenEntity extends BaseEntity implements Linkable {
     @Override
     public String toString() {
         return "TokenEntity{" +
-                "userId='" + userId + '\'' +
+                "entityId='" + entityId + '\'' +
                 ", type=" + type +
                 ", value='" + value + '\'' +
                 ", expiryDate=" + expiryDate +

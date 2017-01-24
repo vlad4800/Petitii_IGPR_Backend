@@ -95,7 +95,7 @@ public class Security {
 
         // if we have a bearer token, we must check if it has privileges to access the given resource and method
         if (type.equals(TokenType.bearer)) {
-            UsersEntity user = dao.get(UsersEntity.class, token.getUserId());
+            UsersEntity user = dao.get(UsersEntity.class, Constants.Fields.ENTITY_ID, token.getEntityId());
 
             if (user == null) return null;
 

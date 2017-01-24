@@ -7,6 +7,7 @@ import org.restexpress.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ro.igpr.tickets.persistence.GenericDao;
+import ro.igpr.tickets.persistence.TokenDao;
 
 import java.util.regex.Pattern;
 
@@ -15,6 +16,7 @@ import java.util.regex.Pattern;
  */
 public abstract class BaseController {
 
+    protected final static TokenDao tokenDao = TokenDao.getInstance();
     protected final static GenericDao dao = GenericDao.getInstance();
     protected static final UrlBuilder LOCATION_BUILDER = new DefaultUrlBuilder();
     protected static final Logger LOG = LoggerFactory.getLogger(BaseController.class);

@@ -9,7 +9,8 @@ package ro.igpr.tickets.persistence.types;
  */
 public enum TokenType {
     device,
-    bearer;
+    bearer,
+    resetPassword;
 
     public static String[] names() {
 

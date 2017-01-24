@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Jan 20, 2017 at 06:06 PM
+-- Generation Time: Jan 24, 2017 at 02:16 PM
 -- Server version: 10.1.20-MariaDB
 -- PHP Version: 7.0.14
 
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `tickets` (
 `id` int(10) unsigned NOT NULL,
   `ticket_county_id` smallint(6) NOT NULL,
   `user_id` int(10) unsigned DEFAULT NULL,
-  `type` enum('furt','crima','viol','generic') NOT NULL DEFAULT 'generic',
+  `type` enum('furt','crima','viol','violentaDomestica','generic') NOT NULL DEFAULT 'generic',
   `device_id` varchar(100) NOT NULL,
   `ip` varchar(50) NOT NULL,
   `name` varchar(200) NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` datetime DEFAULT NULL,
   `delete_date` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -81,7 +81,8 @@ CREATE TABLE IF NOT EXISTS `ticket_attachments` (
   `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` datetime DEFAULT NULL,
   `delete_date` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
 -- --------------------------------------------------------
 
 --
@@ -98,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `ticket_messages` (
   `create_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` datetime DEFAULT NULL,
   `delete_date` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -109,14 +110,14 @@ CREATE TABLE IF NOT EXISTS `ticket_messages` (
 DROP TABLE IF EXISTS `tokens`;
 CREATE TABLE IF NOT EXISTS `tokens` (
 `id` int(10) unsigned NOT NULL,
-  `user_id` int(10) unsigned NOT NULL,
-  `type` enum('bearer','device') DEFAULT 'bearer',
+  `entity_id` varchar(100) NOT NULL,
+  `type` enum('bearer','device','resetPassword') DEFAULT 'bearer',
   `value` char(40) NOT NULL,
   `expiry_date` datetime DEFAULT NULL,
   `create_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   `delete_date` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -174,7 +175,7 @@ ALTER TABLE `ticket_messages`
 -- Indexes for table `tokens`
 --
 ALTER TABLE `tokens`
- ADD PRIMARY KEY (`id`), ADD KEY `expiry_date` (`expiry_date`), ADD KEY `type` (`type`,`value`), ADD KEY `user_id` (`user_id`);
+ ADD PRIMARY KEY (`id`), ADD KEY `expiry_date` (`expiry_date`), ADD KEY `type` (`type`,`value`), ADD KEY `entity_id` (`entity_id`);
 
 --
 -- Indexes for table `users`
@@ -190,22 +191,22 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `tickets`
 --
 ALTER TABLE `tickets`
-MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `ticket_attachments`
 --
 ALTER TABLE `ticket_attachments`
-MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `ticket_messages`
 --
 ALTER TABLE `ticket_messages`
-MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `tokens`
 --
 ALTER TABLE `tokens`
-MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `users`
 --
@@ -234,12 +235,6 @@ ADD CONSTRAINT `ticket_attachments_ibfk_1` FOREIGN KEY (`ticket_id`) REFERENCES 
 --
 ALTER TABLE `ticket_messages`
 ADD CONSTRAINT `ticket_messages_ibfk_1` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `tokens`
---
-ALTER TABLE `tokens`
-ADD CONSTRAINT `tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE CASCADE;
 SET FOREIGN_KEY_CHECKS=1;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

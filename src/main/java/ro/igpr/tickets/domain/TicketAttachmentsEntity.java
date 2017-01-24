@@ -67,6 +67,7 @@ public class TicketAttachmentsEntity extends BaseEntity {
         this.url = url != null ? url : AttachmentUtil.getUrlFromFileName(this.getFileName());
     }
 
+    @JsonIgnore
     @NotNull
     @Basic
     @Column(name = "`file_name`", nullable = false, insertable = true, updatable = true)

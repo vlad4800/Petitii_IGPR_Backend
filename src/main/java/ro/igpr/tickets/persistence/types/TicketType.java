@@ -7,5 +7,6 @@ public enum TicketType {
     furt,
     crima,
     viol,
+    violentaDomestica,
     generic
 }

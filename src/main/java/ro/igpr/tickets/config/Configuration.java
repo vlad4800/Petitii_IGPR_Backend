@@ -32,6 +32,11 @@ public final class Configuration
     private static final String DEFAULT_ATTACHMENTS_URL = "/";
 
     private static String ENVIRONMENT_NAME = "vlad";
+
+    public static final int TOKEN_BEARER_EXPIRY = 3600 * 24;
+    public static final int TOKEN_DEVICE_EXPIRY = 3600 * 24;
+    public static final int TOKEN_RESET_EXPIRY = 3600 * 24;
+
     private String apiVersionNumber;
     private String apiVersionPath;
     private int port;
@@ -48,6 +53,7 @@ public final class Configuration
     private TicketMessagesController ticketMessagesController;
     private TicketAttachmentsController ticketAttachmentsController;
     private UsersController usersController;
+    private AuthController authController;
 
     private final static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -79,6 +85,7 @@ public final class Configuration
         ticketMessagesController = new TicketMessagesController();
         ticketAttachmentsController = new TicketAttachmentsController();
         usersController = new UsersController();
+        authController = new AuthController();
     }
 
     private void initObjectMapper() {
@@ -155,7 +162,23 @@ public final class Configuration
         return usersController;
     }
 
+    public AuthController getAuthController() {
+        return authController;
+    }
+
     public static ObjectMapper getObjectMapper() {
         return objectMapper;
+    }
+
+    public static int getTokenBearerExpiry() {
+        return TOKEN_BEARER_EXPIRY;
+    }
+
+    public static int getTokenResetExpiry() {
+        return TOKEN_RESET_EXPIRY;
+    }
+
+    public static int getTokenDeviceExpiry() {
+        return TOKEN_DEVICE_EXPIRY;
     }
 }

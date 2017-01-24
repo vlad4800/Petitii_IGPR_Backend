@@ -43,8 +43,7 @@ public final class UsersController extends BaseController {
             position = 0)
 
     @ApiImplicitParams({
-
-            @ApiImplicitParam(name = "ticketInfo", required = true, value = "The user details", paramType = "body",
+            @ApiImplicitParam(name = "userDetails", required = true, value = "The user details", paramType = "body",
                     dataType = "UsersEntity"
             ),
     })
@@ -125,7 +124,9 @@ public final class UsersController extends BaseController {
      * @param response
      */
     @ApiImplicitParams({
-
+            @ApiImplicitParam(name = "userDetails", required = true, value = "The user details", paramType = "body",
+                    dataType = "UsersEntity"
+            ),
     })
     public final void update(final Request request, final Response response) {
         super.update(request, response);
