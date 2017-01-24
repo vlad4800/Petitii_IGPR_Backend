@@ -2,7 +2,6 @@ package ro.igpr.tickets.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.strategicgains.restexpress.plugin.swagger.annotations.ApiModelProperty;
-import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiModel;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Email;
@@ -115,7 +114,7 @@ public class TicketsEntity extends BaseEntity {
 
     @NotNull
     @Basic
-    @Column(name = "name", nullable = false, insertable = true, updatable = true, length = 200)
+    @Column(name = "name", nullable = true, insertable = true, updatable = true, length = 200)
     public String getName() {
         return name;
     }
@@ -126,7 +125,7 @@ public class TicketsEntity extends BaseEntity {
 
     @NotNull
     @Basic
-    @Column(name = "`county_id`", nullable = false, insertable = true, updatable = true)
+    @Column(name = "`county_id`", nullable = true, insertable = true, updatable = true)
     public Integer getCountyId() {
         return countyId;
     }
@@ -138,7 +137,7 @@ public class TicketsEntity extends BaseEntity {
     @NotNull
     @Email
     @Basic
-    @Column(name = "`email`", nullable = false, insertable = true, updatable = true, length = 200)
+    @Column(name = "`email`", nullable = true, insertable = true, updatable = true, length = 200)
     public String getEmail() {
         return email;
     }
@@ -149,7 +148,7 @@ public class TicketsEntity extends BaseEntity {
 
     @NotNull
     @Basic
-    @Column(name = "`address`", nullable = false, insertable = true, updatable = true, length = 200)
+    @Column(name = "`address`", nullable = true, insertable = true, updatable = true, length = 200)
     public String getAddress() {
         return address;
     }
@@ -160,7 +159,7 @@ public class TicketsEntity extends BaseEntity {
 
     @Cnp
     @Basic
-    @Column(name = "`cnp`", nullable = false, insertable = true, updatable = true, length = 13)
+    @Column(name = "`cnp`", nullable = true, insertable = true, updatable = true, length = 13)
     public String getCnp() {
         return cnp;
     }
@@ -171,7 +170,7 @@ public class TicketsEntity extends BaseEntity {
 
     @NotNull
     @Basic
-    @Column(name = "`phone`", nullable = false, insertable = true, updatable = true, length = 50)
+    @Column(name = "`phone`", nullable = true, insertable = true, updatable = true, length = 50)
     public String getPhone() {
         return phone;
     }

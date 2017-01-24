@@ -3,6 +3,7 @@ package ro.igpr.tickets.config;
 public final class Constants {
 
     public final class Messages {
+        public static final String OK = "Ok";
         public static final String INVALID_OBJECT_ID = "Invalid object ID supplied!";
 
         public static final String NO_DEVICE_ID = "No device ID supplied!";
@@ -56,6 +57,7 @@ public final class Constants {
         public static final String UTF8 = "UTF-8";
         public static final String P02X = "%02x";
         public static final String SEPARATOR = "#";
+        public static final String AUTHORIZED_TOKEN_ENTITY_NAME = "authorizedTokenEntity";
     }
 
     /**
@@ -123,6 +125,7 @@ public final class Constants {
 
     public final class Fields {
         public static final String ID = "id";
+        public static final String DEVICE_ID = "deviceId";
         public static final String USER_ID = "userId";
         public static final String TICKET_ID = "ticketId";
         public static final String VALUE = "value";

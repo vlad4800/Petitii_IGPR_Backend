@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ro.igpr.tickets.persistence.GenericDao;
 import ro.igpr.tickets.persistence.TokenDao;
+import ro.igpr.tickets.security.Security;
 
 import java.util.regex.Pattern;
 
@@ -27,21 +28,27 @@ public abstract class BaseController {
     }
 
     public Object read(final Request request, final Response response) {
+        Security.checkPrivileges(request);
         return null;
     }
 
     public Object create(final Request request, final Response response) {
+        Security.checkPrivileges(request);
         return null;
     }
 
     public void update(final Request request, final Response response) {
+        Security.checkPrivileges(request);
+        return;
     }
 
     public Object readAll(final Request request, final Response response) {
+        Security.checkPrivileges(request);
         return null;
     }
 
     public void delete(final Request request, final Response response) {
+        Security.checkPrivileges(request);
         return;
     }
 }

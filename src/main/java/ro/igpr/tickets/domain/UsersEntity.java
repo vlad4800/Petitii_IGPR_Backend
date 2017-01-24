@@ -6,6 +6,7 @@ import com.strategicgains.restexpress.plugin.swagger.annotations.ApiModelPropert
 import com.wordnik.swagger.annotations.ApiModel;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Email;
+import ro.igpr.tickets.persistence.types.Roles;
 import ro.igpr.tickets.persistence.types.Status;
 import ro.igpr.tickets.persistence.validator.cnp.Cnp;
 
@@ -42,6 +43,8 @@ public class UsersEntity extends BaseEntity {
     private String phone;
     @ApiModelProperty(required = false)
     private Status status;
+    @ApiModelProperty(required = false)
+    private Roles role;
 
     @ApiModelProperty(hidden = true)
     private List<TicketsEntity> tickets;
@@ -137,13 +140,25 @@ public class UsersEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @NotNull
     @Basic
-    @Column(name = "`status`", nullable = false, insertable = true, updatable = true, length = 50)
+    @Column(name = "`status`", nullable = false, insertable = true, updatable = true)
     public Status getStatus() {
         return status != null ? status : Status.inactive;
     }
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    @Basic
+    @Column(name = "`role`", nullable = false, insertable = true, updatable = true)
+    public Roles getRole() {
+        return role != null ? role : Roles.user;
+    }
+
+    public void setRole(Roles role) {
+        this.role = role;
     }
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -173,7 +188,9 @@ public class UsersEntity extends BaseEntity {
         if (getEmail() != null ? !getEmail().equals(that.getEmail()) : that.getEmail() != null) return false;
         if (getAddress() != null ? !getAddress().equals(that.getAddress()) : that.getAddress() != null) return false;
         if (getCnp() != null ? !getCnp().equals(that.getCnp()) : that.getCnp() != null) return false;
-        return getPhone() != null ? getPhone().equals(that.getPhone()) : that.getPhone() == null;
+        if (getPhone() != null ? !getPhone().equals(that.getPhone()) : that.getPhone() != null) return false;
+        if (getStatus() != that.getStatus()) return false;
+        return getRole() == that.getRole();
     }
 
     @Override
@@ -187,6 +204,8 @@ public class UsersEntity extends BaseEntity {
         result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
         result = 31 * result + (getCnp() != null ? getCnp().hashCode() : 0);
         result = 31 * result + (getPhone() != null ? getPhone().hashCode() : 0);
+        result = 31 * result + (getStatus() != null ? getStatus().hashCode() : 0);
+        result = 31 * result + (getRole() != null ? getRole().hashCode() : 0);
         return result;
     }
 
@@ -201,6 +220,8 @@ public class UsersEntity extends BaseEntity {
                 ", address='" + address + '\'' +
                 ", cnp='" + cnp + '\'' +
                 ", phone='" + phone + '\'' +
+                ", status=" + status +
+                ", role=" + role +
                 '}';
     }
 }

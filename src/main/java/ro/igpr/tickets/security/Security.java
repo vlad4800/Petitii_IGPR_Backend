@@ -2,11 +2,13 @@ package ro.igpr.tickets.security;
 
 import io.netty.handler.codec.http.HttpHeaders;
 import org.restexpress.Request;
+import org.restexpress.exception.ForbiddenException;
 import org.restexpress.exception.UnauthorizedException;
 import ro.igpr.tickets.config.Constants;
 import ro.igpr.tickets.domain.TokenEntity;
 import ro.igpr.tickets.domain.UsersEntity;
 import ro.igpr.tickets.persistence.GenericDao;
+import ro.igpr.tickets.persistence.types.Roles;
 import ro.igpr.tickets.persistence.types.TokenType;
 
 import java.io.UnsupportedEncodingException;
@@ -27,7 +29,7 @@ public class Security {
      * Checks if requested method can be executed for the provided access token
      *
      * @param request
-     * @return TODO Implement actual ACL privileges
+     * @return
      */
     public static void checkPrivileges(Request request) {
 
@@ -39,7 +41,7 @@ public class Security {
 
         boolean hasPrivileges = false;
         if (authToken.startsWith(Constants.Tokens.TOKEN_DEVICE_NAME)) {
-            hasPrivileges = isDeviceIdValid(authToken.toLowerCase().replace(Constants.Tokens.TOKEN_DEVICE_NAME, EMPTY_STRING).trim());
+            hasPrivileges = isAuthTokenValid(request, authToken.toLowerCase().replace(Constants.Tokens.TOKEN_DEVICE_NAME, EMPTY_STRING).trim(), TokenType.device);
         } else if (authToken.toLowerCase().startsWith(Constants.Tokens.TOKEN_BEARER_NAME)) {
             hasPrivileges = isAuthTokenValid(request, authToken.toLowerCase().replace(Constants.Tokens.TOKEN_BEARER_NAME, EMPTY_STRING).trim(), TokenType.bearer);
         }
@@ -71,7 +73,7 @@ public class Security {
      */
     private static final boolean isAuthTokenValid(Request request, String authToken, TokenType type) {
 
-        return (getAuthorizedTokenEntity(authToken, type) != null);
+        return (getAuthorizedTokenEntity(request, authToken, type) != null);
     }
 
     /**
@@ -81,7 +83,7 @@ public class Security {
      * @param type
      * @return
      */
-    public static TokenEntity getAuthorizedTokenEntity(String authToken, TokenType type) {
+    public static TokenEntity getAuthorizedTokenEntity(Request request, String authToken, TokenType type) {
 
         final Map<String, Object> params = new HashMap<>();
         params.put(Constants.Fields.VALUE, authToken);
@@ -93,23 +95,31 @@ public class Security {
         // if expiry time is before current time then token is expired
         if (token.getExpiryDate().before(now)) return null;
 
-        // if we have a bearer token, we must check if it has privileges to access the given resource and method
+        Roles role = Roles.user;
         if (type.equals(TokenType.bearer)) {
-            UsersEntity user = dao.get(UsersEntity.class, Constants.Fields.ENTITY_ID, token.getEntityId());
+            UsersEntity user = dao.get(UsersEntity.class, Constants.Fields.ID, Long.valueOf(token.getEntityId()));
 
             if (user == null) return null;
 
-            /**
-             * Extend user token expiry date with 30 minutes if it expires within 5 minutes or less from now
-             */
-            if (token.getExpiryDate().getTime() - now.getTime() <= FIVE_MINUTES) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(token.getExpiryDate());
-                calendar.add(Calendar.MINUTE, THIRTY_MINUTES);
-                token.setExpiryDate(calendar.getTime());
-                dao.saveOrUpdate(token);
-            }
+            role = user.getRole();
+        } else if (type.equals(TokenType.device)) {
+            role = Roles.device;
         }
+
+        if (!Acl.getInstance().hasPermission(role, request.getResolvedRoute().getName(), request.getResolvedRoute().getMethod()))
+            throw new ForbiddenException(Constants.Messages.FORBIDDEN_RESOURCE);
+
+        /**
+         * Extend user token expiry date with 30 minutes if it expires within 5 minutes or less from now
+         */
+        if (token.getExpiryDate().getTime() - now.getTime() <= FIVE_MINUTES) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(token.getExpiryDate());
+            calendar.add(Calendar.MINUTE, THIRTY_MINUTES);
+            token.setExpiryDate(calendar.getTime());
+            dao.saveOrUpdate(token);
+        }
+        request.putAttachment(Constants.Tokens.AUTHORIZED_TOKEN_ENTITY_NAME, token);
 
         return token;
     }
