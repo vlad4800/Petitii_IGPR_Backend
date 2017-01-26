@@ -136,4 +136,22 @@ public final class Constants {
         public static final String EMAIL = "email";
         public static final String PASSWORD = "password";
     }
+
+    public class ConsoleLog {
+        public final static String IP = "IP:";
+        public final static String TOKEN = "TOKEN:";
+        public final static String METHOD = "METHOD:";
+        public final static String URL = "URL:";
+        public final static String THREW_EXCEPTION = " threw exception: ";
+        public final static String WITH_MESSAGE = " with message: ";
+        public final static String GZIP_SUPPORT = " | Gzip support: ";
+        public final static String SPACE = " ";
+        public final static String RESPONDED_WITH = " responded with ";
+        public final static String IN = " in ";
+        public final static String NO_TIMER_FOUND = " (no timer found)";
+        public final static String X_FORWARDED_FOR = "x-forwarded-for";
+        public final static String COMMA = ",";
+        public final static String PROD = "prod";
+        public final static String MS = "ms";
+    }
 }

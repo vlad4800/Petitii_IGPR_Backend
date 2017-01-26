@@ -122,8 +122,6 @@ public final class TicketAttachmentsController extends BaseController {
      * @param response
      * @return
      */
-    @ApiImplicitParams({
-    })
     public final List<TicketAttachmentsEntity> readAll(final Request request, final Response response) {
         super.readAll(request, response);
 
