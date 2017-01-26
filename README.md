@@ -10,7 +10,7 @@ REST Api pentru petitii online Politie.
 
 ## Instalare
 
-### Dependinte
+### Dependinte 
 ```
 sudo apt-get update
 ```
