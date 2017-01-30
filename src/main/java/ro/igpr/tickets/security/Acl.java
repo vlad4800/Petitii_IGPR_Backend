@@ -25,6 +25,7 @@ public class Acl {
         permissions.put(Roles.admin,
                 new HashMap<String, Boolean>() {{
                     put(Constants.Routes.COUNTY_COLLECTION + "_" + HttpMethod.GET, true);
+
                     put(Constants.Routes.SINGLE_USER + "_" + HttpMethod.GET, true);
                     put(Constants.Routes.SINGLE_USER + "_" + HttpMethod.PUT, true);
                     put(Constants.Routes.SINGLE_USER + "_" + HttpMethod.DELETE, true);
@@ -32,26 +33,77 @@ public class Acl {
                     put(Constants.Routes.USER_COLLECTION + "_" + HttpMethod.POST, true);
                     put(Constants.Routes.USER_COLLECTION + "_" + HttpMethod.PUT, true);
                     put(Constants.Routes.USER_COLLECTION + "_" + HttpMethod.DELETE, true);
+
+                    put(Constants.Routes.SINGLE_MESSAGE + "_" + HttpMethod.GET, true);
+                    put(Constants.Routes.SINGLE_MESSAGE + "_" + HttpMethod.PUT, true);
+                    put(Constants.Routes.SINGLE_MESSAGE + "_" + HttpMethod.DELETE, true);
+                    put(Constants.Routes.MESSAGE_COLLECTION + "_" + HttpMethod.GET, true);
+                    put(Constants.Routes.MESSAGE_COLLECTION + "_" + HttpMethod.POST, true);
+
+                    put(Constants.Routes.SINGLE_ATTACHMENT + "_" + HttpMethod.GET, true);
+                    put(Constants.Routes.SINGLE_ATTACHMENT + "_" + HttpMethod.DELETE, true);
+                    put(Constants.Routes.ATTACHMENT_COLLECTION + "_" + HttpMethod.GET, true);
+                    put(Constants.Routes.ATTACHMENT_COLLECTION + "_" + HttpMethod.POST, true);
                 }}
         );
         permissions.put(Roles.user,
                 new HashMap<String, Boolean>() {{
                     put(Constants.Routes.COUNTY_COLLECTION + "_" + HttpMethod.GET, true);
+
                     put(Constants.Routes.SINGLE_TICKET + "_" + HttpMethod.GET, true);
                     put(Constants.Routes.SINGLE_TICKET + "_" + HttpMethod.PUT, true);
                     put(Constants.Routes.SINGLE_TICKET + "_" + HttpMethod.DELETE, true);
                     put(Constants.Routes.TICKET_COLLECTION + "_" + HttpMethod.GET, true);
                     put(Constants.Routes.TICKET_COLLECTION + "_" + HttpMethod.POST, true);
+
+                    put(Constants.Routes.SINGLE_USER + "_" + HttpMethod.GET, true);
+                    put(Constants.Routes.SINGLE_USER + "_" + HttpMethod.PUT, true);
+                    put(Constants.Routes.SINGLE_USER + "_" + HttpMethod.DELETE, true);
+                    put(Constants.Routes.USER_COLLECTION + "_" + HttpMethod.GET, true);
+                    put(Constants.Routes.USER_COLLECTION + "_" + HttpMethod.POST, true);
+                    put(Constants.Routes.USER_COLLECTION + "_" + HttpMethod.PUT, true);
+                    put(Constants.Routes.USER_COLLECTION + "_" + HttpMethod.DELETE, true);
+
+                    put(Constants.Routes.SINGLE_MESSAGE + "_" + HttpMethod.GET, true);
+                    put(Constants.Routes.SINGLE_MESSAGE + "_" + HttpMethod.PUT, true);
+                    put(Constants.Routes.SINGLE_MESSAGE + "_" + HttpMethod.DELETE, true);
+                    put(Constants.Routes.MESSAGE_COLLECTION + "_" + HttpMethod.GET, true);
+                    put(Constants.Routes.MESSAGE_COLLECTION + "_" + HttpMethod.POST, true);
+
+                    put(Constants.Routes.SINGLE_ATTACHMENT + "_" + HttpMethod.GET, true);
+                    put(Constants.Routes.SINGLE_ATTACHMENT + "_" + HttpMethod.DELETE, true);
+                    put(Constants.Routes.ATTACHMENT_COLLECTION + "_" + HttpMethod.GET, true);
+                    put(Constants.Routes.ATTACHMENT_COLLECTION + "_" + HttpMethod.POST, true);
                 }}
         );
         permissions.put(Roles.device,
                 new HashMap<String, Boolean>() {{
                     put(Constants.Routes.COUNTY_COLLECTION + "_" + HttpMethod.GET, true);
+
                     put(Constants.Routes.SINGLE_TICKET + "_" + HttpMethod.GET, true);
                     put(Constants.Routes.SINGLE_TICKET + "_" + HttpMethod.PUT, true);
                     put(Constants.Routes.SINGLE_TICKET + "_" + HttpMethod.DELETE, true);
                     put(Constants.Routes.TICKET_COLLECTION + "_" + HttpMethod.GET, true);
                     put(Constants.Routes.TICKET_COLLECTION + "_" + HttpMethod.POST, true);
+
+                    put(Constants.Routes.SINGLE_USER + "_" + HttpMethod.GET, true);
+                    put(Constants.Routes.SINGLE_USER + "_" + HttpMethod.PUT, true);
+                    put(Constants.Routes.SINGLE_USER + "_" + HttpMethod.DELETE, true);
+                    put(Constants.Routes.USER_COLLECTION + "_" + HttpMethod.GET, true);
+                    put(Constants.Routes.USER_COLLECTION + "_" + HttpMethod.POST, true);
+                    put(Constants.Routes.USER_COLLECTION + "_" + HttpMethod.PUT, true);
+                    put(Constants.Routes.USER_COLLECTION + "_" + HttpMethod.DELETE, true);
+
+                    put(Constants.Routes.SINGLE_MESSAGE + "_" + HttpMethod.GET, true);
+                    put(Constants.Routes.SINGLE_MESSAGE + "_" + HttpMethod.PUT, true);
+                    put(Constants.Routes.SINGLE_MESSAGE + "_" + HttpMethod.DELETE, true);
+                    put(Constants.Routes.MESSAGE_COLLECTION + "_" + HttpMethod.GET, true);
+                    put(Constants.Routes.MESSAGE_COLLECTION + "_" + HttpMethod.POST, true);
+
+                    put(Constants.Routes.SINGLE_ATTACHMENT + "_" + HttpMethod.GET, true);
+                    put(Constants.Routes.SINGLE_ATTACHMENT + "_" + HttpMethod.DELETE, true);
+                    put(Constants.Routes.ATTACHMENT_COLLECTION + "_" + HttpMethod.GET, true);
+                    put(Constants.Routes.ATTACHMENT_COLLECTION + "_" + HttpMethod.POST, true);
                 }}
         );
     }

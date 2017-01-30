@@ -15,6 +15,7 @@ import ro.igpr.tickets.config.Constants;
 import ro.igpr.tickets.domain.TicketsEntity;
 import ro.igpr.tickets.domain.TokenEntity;
 import ro.igpr.tickets.persistence.types.TokenType;
+import ro.igpr.tickets.util.CommonUtil;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -59,7 +60,7 @@ public final class TicketsController extends BaseController {
         final TicketsEntity entity = request.getBodyAs(TicketsEntity.class, Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED);
 
         // set the ticket IP to the IP of the request
-        entity.setIp(request.getRemoteAddress().getAddress().getHostAddress());
+        entity.setIp(CommonUtil.getIp(request));
         dao.save(entity);
 
         // Bind the resource with link URL tokens, etc. here...
@@ -114,8 +115,6 @@ public final class TicketsController extends BaseController {
             @ApiResponse(code = 403, message = Constants.Messages.FORBIDDEN_RESOURCE),
             @ApiResponse(code = 404, message = Constants.Messages.TICKET_NOT_FOUND),
     })
-    @ApiImplicitParams({
-    })
     public final List<TicketsEntity> readAll(final Request request, final Response response) {
         super.readAll(request, response);
 
@@ -151,8 +150,16 @@ public final class TicketsController extends BaseController {
             @ApiResponse(code = 404, message = Constants.Messages.TICKET_NOT_FOUND),
             @ApiResponse(code = 409, message = Constants.Messages.GENERIC_DATA_CONFLICT),
     })
+    @ApiOperation(value = "Update a ticket.",
+            notes = "Update a ticket.",
+            response = TicketsEntity.class,
+            position = 0)
+
     @ApiImplicitParams({
 
+            @ApiImplicitParam(name = "ticketDetails", required = true, value = "The ticket details", paramType = "body",
+                    dataType = "TicketsEntity"
+            ),
     })
     public final void update(final Request request, final Response response) {
         super.update(request, response);

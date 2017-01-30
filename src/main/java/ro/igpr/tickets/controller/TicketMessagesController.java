@@ -132,8 +132,25 @@ public final class TicketMessagesController extends BaseController {
      * @param request
      * @param response
      */
+    @ApiResponses({
+            @ApiResponse(code = 204, message = ""),
+            @ApiResponse(code = 400, message = Constants.Messages.NO_MESSAGE_ID),
+            @ApiResponse(code = 400, message = Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED),
+            @ApiResponse(code = 403, message = Constants.Messages.FORBIDDEN_RESOURCE),
+            @ApiResponse(code = 404, message = Constants.Messages.MESSAGE_NOT_FOUND),
+            @ApiResponse(code = 409, message = Constants.Messages.GENERIC_DATA_CONFLICT)
+    })
+
+    @ApiOperation(value = "Update a ticket message.",
+            notes = "Update a ticket message.",
+            response = TicketMessagesEntity.class,
+            position = 0)
+
     @ApiImplicitParams({
 
+            @ApiImplicitParam(name = "ticketMessageDetails", required = true, value = "The ticket message details", paramType = "body",
+                    dataType = "TicketMessagesEntity"
+            ),
     })
     public final void update(final Request request, final Response response) {
         super.update(request, response);
