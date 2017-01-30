@@ -26,10 +26,12 @@ public final class AuthController extends BaseController {
     }
 
     @ApiResponses({
+            @ApiResponse(code = 200, message = Constants.Messages.OK, response = TokenEntity.class),
+            @ApiResponse(code = 400, message = Constants.Messages.NO_USERNAME),
+            @ApiResponse(code = 400, message = Constants.Messages.NO_PASSWORD),
             @ApiResponse(code = 401, message = Constants.Messages.LOGIN_FAILED),
             @ApiResponse(code = 403, message = Constants.Messages.FORBIDDEN_RESOURCE),
             @ApiResponse(code = 404, message = Constants.Messages.USER_NOT_FOUND),
-            @ApiResponse(code = 405, message = Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED),
             @ApiResponse(code = 409, message = Constants.Messages.GENERIC_DATA_CONFLICT)
     })
     @ApiOperation(value = "Get a user token",
@@ -80,6 +82,8 @@ public final class AuthController extends BaseController {
 
 
     @ApiResponses({
+            @ApiResponse(code = 200, message = Constants.Messages.OK, response = TokenEntity.class),
+            @ApiResponse(code = 400, message = Constants.Messages.NO_DEVICE_ID),
             @ApiResponse(code = 400, message = Constants.Messages.INVALID_DEVICE_ID),
             @ApiResponse(code = 403, message = Constants.Messages.FORBIDDEN_RESOURCE),
             @ApiResponse(code = 405, message = Constants.Messages.RESOURCE_DETAILS_NOT_PROVIDED),

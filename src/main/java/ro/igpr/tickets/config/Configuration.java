@@ -34,7 +34,7 @@ public final class Configuration
     private static String ENVIRONMENT_NAME = "vlad";
 
     public static final int TOKEN_BEARER_EXPIRY = 3600 * 24;
-    public static final int TOKEN_DEVICE_EXPIRY = 3600 * 24;
+    public static final int TOKEN_DEVICE_EXPIRY = 3600 * 24 * 365;
     public static final int TOKEN_RESET_EXPIRY = 3600 * 24;
 
     private String apiVersionNumber;
