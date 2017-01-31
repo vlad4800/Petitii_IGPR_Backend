@@ -12,11 +12,11 @@ public abstract class Routes {
 
         // Auth
         server.uri("/" + Constants.Routes.AUTH_USERS, config.getAuthController())
-                .action(Constants.Routes.Actions.USERS, HttpMethod.GET)
+                .action(Constants.Routes.Actions.USERS, HttpMethod.POST)
                 .name(Constants.Routes.AUTH_USERS_SINGLE_ROUTE);
 
         server.uri("/" + Constants.Routes.AUTH_DEVICES, config.getAuthController())
-                .action(Constants.Routes.Actions.DEVICES, HttpMethod.GET)
+                .action(Constants.Routes.Actions.DEVICES, HttpMethod.POST)
                 .name(Constants.Routes.AUTH_DEVICES_SINGLE_ROUTE);
 
         // Counties
